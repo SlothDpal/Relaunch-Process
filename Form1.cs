@@ -1,6 +1,8 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Security.Principal;
 using System.Threading;
 using System.Windows.Forms;
 using RelaunchProcess.Properties;
@@ -29,6 +31,7 @@ namespace Process_Auto_Relaunch
         {
             LoadOldState();
 
+            //MessageBox.Show(Environment.UserDomainName);
 
             CheckProgramState();
         }
@@ -179,7 +182,22 @@ namespace Process_Auto_Relaunch
 
         private bool ProcessByNameIsRuning(string name)
         {
-            return Process.GetProcessesByName(name).Length > 0;
+            var sessionid = Process.GetCurrentProcess().SessionId;
+            var processes = Process.GetProcessesByName(name);
+            foreach (var process in processes)
+            {
+                if (!process.Responding)
+                {
+                    MessageBox.Show($"Возможно процесс {process.ProcessName} завис.");
+                }
+                
+                Debug.WriteLine($"Found proces: {process.ProcessName}. Session Id: {process.SessionId}. Current Session Id: {sessionid}");
+                if (process.SessionId == sessionid)
+                    return true;
+            }
+
+            Debug.WriteLine($"Process {name} for current session id {sessionid} not found");
+            return false;
         }
 
         private void ProcessStart(string path, string args)

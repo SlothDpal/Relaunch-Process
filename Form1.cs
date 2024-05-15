@@ -10,7 +10,7 @@ namespace Process_Auto_Relaunch
 {
     public partial class Form1 : Form
     {
-        private delegate void UpdateLogDelegate(string text);
+        private delegate void UpdateLogDelegate(string text, bool add_history = false);
         private UpdateLogDelegate updateLogDelegate = null;
 
         public Form1()
@@ -45,6 +45,11 @@ namespace Process_Auto_Relaunch
             
         }
 
+        /// <summary>
+        /// Метод для события отключения
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void radioButtonDisableWathing_CheckedChanged(object sender, EventArgs e)
         {
             CheckProgramState();
@@ -61,7 +66,11 @@ namespace Process_Auto_Relaunch
             }
         }
 
-
+        /// <summary>
+        /// Метод для события включения
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void radioButtonEnableWathing_CheckedChanged(object sender, EventArgs e)
         {
             if (!radioButtonEnableWathing.Checked)
@@ -97,14 +106,29 @@ namespace Process_Auto_Relaunch
             }
         }
 
-        private void UpdateStatus(string text)
+        /// <summary>
+        /// Обновление статуса в программе
+        /// </summary>
+        /// <param name="text">Текст для отображения</param>
+        /// <param name="add_history">Сохранение текста в окно истории</param>
+        public void UpdateStatus(string text, bool add_history = false)
         {
             labelStatus.Text = text;
+
+            if (add_history)
+            {
+                HistoryLog(text);
+            }
         }
 
-        private void Status(string text)
+        private void HistoryLog(string text)
         {
-            Invoke(updateLogDelegate, new[] { text });
+            richTextBoxHistory.Text += DateTime.Now.ToString() + ": " + text + "\n";
+        }
+
+        public void Status(string text, bool add_history = false)
+        {
+            Invoke(updateLogDelegate, text, add_history);
         }
 
         private void CheckProgramState()
@@ -167,7 +191,8 @@ namespace Process_Auto_Relaunch
                     return;
                 }
             }
-            
+
+            Status("Процесс был запущен.", true);
             Process.Start(path, args);
         }
 
@@ -193,6 +218,7 @@ namespace Process_Auto_Relaunch
 
                     if (i <= 0 || radioButtonRestartNow.Checked)
                     {
+                        i = (int)numericUpDown1.Value;
                         Status("Запускаем...");
                         ProcessStart(Settings.Default.startProgramPath, textBoxArguments.Text);
                     }
@@ -216,7 +242,7 @@ namespace Process_Auto_Relaunch
             else if (e.Error != null)
             {
                 MessageBox.Show("Error: " + e.Error.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                Status("Произошла ошибка. Наблюдение остановлено!");
+                Status("Произошла ошибка! Наблюдение остановлено.", true);
                 radioButtonDisableWathing.Checked = true;
             }
             else

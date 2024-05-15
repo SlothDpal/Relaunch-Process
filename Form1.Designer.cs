@@ -51,12 +51,15 @@ namespace Process_Auto_Relaunch
             this.labelProgramStartPath = new System.Windows.Forms.Label();
             this.checkBoxCheckProcess = new System.Windows.Forms.CheckBox();
             this.radioButtonRestartNow = new System.Windows.Forms.RadioButton();
+            this.groupBoxHistory = new System.Windows.Forms.GroupBox();
+            this.richTextBoxHistory = new System.Windows.Forms.RichTextBox();
             this.groupBoxActions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.groupBoxProgramStart.SuspendLayout();
             this.groupBoxProcessName.SuspendLayout();
             this.groupBoxEnabled.SuspendLayout();
             this.groupBoxStatus.SuspendLayout();
+            this.groupBoxHistory.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxActions
@@ -179,7 +182,7 @@ namespace Process_Auto_Relaunch
             this.groupBoxProcessName.Size = new System.Drawing.Size(383, 62);
             this.groupBoxProcessName.TabIndex = 8;
             this.groupBoxProcessName.TabStop = false;
-            this.groupBoxProcessName.Text = "Название наблюдаемого процесса";
+            this.groupBoxProcessName.Text = "Название наблюдаемого процесса (без расширения)";
             // 
             // groupBoxEnabled
             // 
@@ -312,9 +315,9 @@ namespace Process_Auto_Relaunch
             this.checkBoxCheckProcess.Location = new System.Drawing.Point(11, 78);
             this.checkBoxCheckProcess.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.checkBoxCheckProcess.Name = "checkBoxCheckProcess";
-            this.checkBoxCheckProcess.Size = new System.Drawing.Size(190, 20);
+            this.checkBoxCheckProcess.Size = new System.Drawing.Size(265, 20);
             this.checkBoxCheckProcess.TabIndex = 2;
-            this.checkBoxCheckProcess.Text = "Не создавать дубликаты";
+            this.checkBoxCheckProcess.Text = "Проверять наличие перед запуском";
             this.checkBoxCheckProcess.UseVisualStyleBackColor = true;
             // 
             // radioButtonRestartNow
@@ -330,11 +333,36 @@ namespace Process_Auto_Relaunch
             this.radioButtonRestartNow.Text = "Перезапускать сразу";
             this.radioButtonRestartNow.UseVisualStyleBackColor = true;
             // 
+            // groupBoxHistory
+            // 
+            this.groupBoxHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBoxHistory.Controls.Add(this.richTextBoxHistory);
+            this.groupBoxHistory.Location = new System.Drawing.Point(13, 514);
+            this.groupBoxHistory.Name = "groupBoxHistory";
+            this.groupBoxHistory.Size = new System.Drawing.Size(383, 132);
+            this.groupBoxHistory.TabIndex = 11;
+            this.groupBoxHistory.TabStop = false;
+            this.groupBoxHistory.Text = "История запусков";
+            // 
+            // richTextBoxHistory
+            // 
+            this.richTextBoxHistory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.richTextBoxHistory.Location = new System.Drawing.Point(0, 21);
+            this.richTextBoxHistory.Name = "richTextBoxHistory";
+            this.richTextBoxHistory.ReadOnly = true;
+            this.richTextBoxHistory.Size = new System.Drawing.Size(383, 111);
+            this.richTextBoxHistory.TabIndex = 0;
+            this.richTextBoxHistory.Text = "";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(421, 533);
+            this.ClientSize = new System.Drawing.Size(421, 658);
+            this.Controls.Add(this.groupBoxHistory);
             this.Controls.Add(this.groupBoxStatus);
             this.Controls.Add(this.groupBoxEnabled);
             this.Controls.Add(this.groupBoxProcessName);
@@ -359,6 +387,7 @@ namespace Process_Auto_Relaunch
             this.groupBoxEnabled.PerformLayout();
             this.groupBoxStatus.ResumeLayout(false);
             this.groupBoxStatus.PerformLayout();
+            this.groupBoxHistory.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -385,5 +414,7 @@ namespace Process_Auto_Relaunch
         public Label labelStatus;
         private System.ComponentModel.BackgroundWorker myBackgroundWorker;
         private NumericUpDown numericUpDown1;
+        private GroupBox groupBoxHistory;
+        private RichTextBox richTextBoxHistory;
     }
 }

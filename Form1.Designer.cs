@@ -1,4 +1,4 @@
-﻿using System.Windows.Forms;
+using System.Windows.Forms;
 
 namespace Process_Auto_Relaunch
 {
@@ -82,6 +82,7 @@ namespace Process_Auto_Relaunch
             // 
             // numericUpDown1
             // 
+            this.numericUpDown1.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::RelaunchProcess.Properties.Settings.Default, "timer", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.numericUpDown1.Increment = new decimal(new int[] {
             5,
             0,
@@ -103,11 +104,7 @@ namespace Process_Auto_Relaunch
             this.numericUpDown1.Size = new System.Drawing.Size(72, 22);
             this.numericUpDown1.TabIndex = 5;
             this.numericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDown1.Value = new decimal(new int[] {
-            30,
-            0,
-            0,
-            0});
+            this.numericUpDown1.Value = global::RelaunchProcess.Properties.Settings.Default.timer;
             // 
             // label1
             // 

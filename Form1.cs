@@ -7,6 +7,8 @@ using System.Threading;
 using System.Windows.Forms;
 using RelaunchProcess.Properties;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using Discord;
+using Discord.Webhook;
 
 namespace Process_Auto_Relaunch
 {
@@ -14,12 +16,17 @@ namespace Process_Auto_Relaunch
     {
         private delegate void UpdateLogDelegate(string text, bool add_history = false);
         private UpdateLogDelegate updateLogDelegate = null;
+        private DiscordWebhook DWHook;
+        private DiscordMessage DMessage;
 
         public Form1()
         {
             InitializeComponent();
             this.updateLogDelegate = new UpdateLogDelegate(this.UpdateStatus);
             myBackgroundWorker.WorkerSupportsCancellation = true;
+            DWHook = new DiscordWebhook();
+            DWHook.Url = "https://discord.com/api/webhooks/1241061556213776405/alNwHEtwe20MvBxFTSDWPKDarPCJpD-0oDUgdcT_5YrLqoybJq7oxNOCOqqmynuVD93p";
+
         }
 
         /// <summary>
@@ -117,6 +124,10 @@ namespace Process_Auto_Relaunch
         public void UpdateStatus(string text, bool add_history = false)
         {
             labelStatus.Text = text;
+
+            DMessage = new DiscordMessage();
+            DMessage.Content = text;
+            DWHook.Send(DMessage);
 
             if (add_history)
             {

@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/CSharpDiscordWebhook.dll
+/Newtonsoft.Json.dll
+/Newtonsoft.Json.xml

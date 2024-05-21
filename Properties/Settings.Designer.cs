@@ -106,5 +106,17 @@ namespace RelaunchProcess.Properties {
                 this["restartNow"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        public decimal timer {
+            get {
+                return ((decimal)(this["timer"]));
+            }
+            set {
+                this["timer"] = value;
+            }
+        }
     }
 }

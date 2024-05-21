@@ -189,11 +189,6 @@ namespace Process_Auto_Relaunch
             var processes = Process.GetProcessesByName(name);
             foreach (var process in processes)
             {
-                if (!process.Responding)
-                {
-                    MessageBox.Show($"Возможно процесс {process.ProcessName} завис.");
-                }
-                
                 Debug.WriteLine($"Found proces: {process.ProcessName}. Session Id: {process.SessionId}. Current Session Id: {sessionid}");
                 if (process.SessionId == sessionid)
                     return true;

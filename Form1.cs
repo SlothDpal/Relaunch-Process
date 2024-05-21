@@ -156,6 +156,7 @@ namespace Process_Auto_Relaunch
         private void buttonSetProgramStart_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFile = new OpenFileDialog();
+            openFile.Filter = "Исполняемые файлы (*.exe)|*.exe";
             openFile.Title = "Укажите программу запуска";
 
             if (openFile.ShowDialog() == DialogResult.Cancel)
@@ -163,7 +164,9 @@ namespace Process_Auto_Relaunch
                 return;
             }
 
-            //labelProgramStartPath.Text = openFile.FileName;
+            int lastSlash = openFile.FileName.LastIndexOf("\\");
+            textBoxProcessName.Text = openFile.FileName.Substring(lastSlash+1);
+            textBoxProcessName.Text = textBoxProcessName.Text.Remove(textBoxProcessName.Text.Length-4);
             Settings.Default.startProgramPath = openFile.FileName;
             Settings.Default.Save();
 

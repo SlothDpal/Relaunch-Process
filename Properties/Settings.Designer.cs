@@ -118,5 +118,29 @@ namespace RelaunchProcess.Properties {
                 this["timer"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string dwhURL {
+            get {
+                return ((string)(this["dwhURL"]));
+            }
+            set {
+                this["dwhURL"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool dwhEnabled {
+            get {
+                return ((bool)(this["dwhEnabled"]));
+            }
+            set {
+                this["dwhEnabled"] = value;
+            }
+        }
     }
 }

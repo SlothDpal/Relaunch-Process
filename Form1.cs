@@ -9,23 +9,38 @@ using RelaunchProcess.Properties;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Discord;
 using Discord.Webhook;
+using System.Data;
+using static System.Net.Mime.MediaTypeNames;
+using RelaunchProcess;
+
 
 namespace Process_Auto_Relaunch
 {
     public partial class Form1 : Form
     {
         private delegate void UpdateLogDelegate(string text, bool add_history = false);
-        private UpdateLogDelegate updateLogDelegate = null;
-        private DiscordWebhook DWHook;
-        private DiscordMessage DMessage;
+        private UpdateLogDelegate updateLogDelegate;
+        private DiscordWebhook dwhHook;
+        private DiscordMessage dwhMessage;
+        private DiscordSettings discordSettings;
 
         public Form1()
         {
             InitializeComponent();
-            this.updateLogDelegate = new UpdateLogDelegate(this.UpdateStatus);
+            this.updateLogDelegate = this.UpdateStatus;
+            this.updateLogDelegate += this.SendDiscordMessage;
             myBackgroundWorker.WorkerSupportsCancellation = true;
-            DWHook = new DiscordWebhook();
-            DWHook.Url = "https://discord.com/api/webhooks/1241061556213776405/alNwHEtwe20MvBxFTSDWPKDarPCJpD-0oDUgdcT_5YrLqoybJq7oxNOCOqqmynuVD93p";
+            dwhHook = new DiscordWebhook();
+            if ( Uri.IsWellFormedUriString(Settings.Default.dwhURL,UriKind.Absolute) && Settings.Default.dwhEnabled && Settings.Default.dwhURL!="") 
+            {
+                dwhHook.Url = Settings.Default.dwhURL;
+            }
+            else if (Settings.Default.dwhEnabled) { 
+                Debug.WriteLine($"Ошибка в URL веб-хука ({Settings.Default.dwhURL}). Вывод в Discord отключен.");
+                HistoryLog($"Ошибка в URL веб-хука ({Settings.Default.dwhURL}). Вывод в Discord отключен.");
+                Settings.Default.dwhEnabled = false;
+                Settings.Default.Save();
+            }
 
         }
 
@@ -125,10 +140,6 @@ namespace Process_Auto_Relaunch
         {
             labelStatus.Text = text;
 
-            DMessage = new DiscordMessage();
-            DMessage.Content = text;
-            DWHook.Send(DMessage);
-
             if (add_history)
             {
                 HistoryLog(text);
@@ -153,6 +164,7 @@ namespace Process_Auto_Relaunch
             groupBoxProcessName.Enabled = !watching;
             groupBoxProgramStart.Enabled = !watching;
             groupBoxActions.Enabled = !watching;
+            btnShowDiscordSettings.Enabled = !watching;
 
             Settings.Default.enableWatching = watching;
 
@@ -233,12 +245,14 @@ namespace Process_Auto_Relaunch
                 if (ProcessByNameIsRuning(textBoxProcessName.Text))
                 {
                     Status($"Процесс {textBoxProcessName.Text} уже запущен");
+                    if (i < (int)numericUpDown1.Value) SendDiscordMessage($"Процесс {textBoxProcessName.Text} запущен.",true);
                     i = (int)numericUpDown1.Value;
                 }
                 else
                 {
                     if (radioButtonRestartTimer.Checked)
                     {
+                        if (i==(int)numericUpDown1.Value) SendDiscordMessage($"Процесс {textBoxProcessName.Text} не найден. Запуск через {i}",true);
                         i--;
                         Status($"Процесс {textBoxProcessName.Text} не найден. Запуск через {i}");
                     }
@@ -247,6 +261,7 @@ namespace Process_Auto_Relaunch
                     {
                         i = (int)numericUpDown1.Value;
                         Status("Запускаем...");
+                        SendDiscordMessage($"Запускаем {textBoxProcessName.Text}",true);
                         ProcessStart(Settings.Default.startProgramPath, textBoxArguments.Text);
                     }
                 }
@@ -276,6 +291,39 @@ namespace Process_Auto_Relaunch
             {
                 Status("Наблюдение остановлено.");
             }
+        }
+
+        /// <summary>
+        /// Отправка сообщения в Дискорд
+        /// </summary>
+        /// <param name="text">Текст для отправки</param>
+        public void SendDiscordMessage(string message, bool addToHistory = false)
+        {
+            if (Settings.Default.dwhEnabled && addToHistory)
+            {
+                dwhHook.Url = Settings.Default.dwhURL;
+                dwhMessage.Username = "Relaunch process";
+                dwhMessage.Content = ":arrows_counterclockwise: " + message;
+                try
+                {
+                    dwhHook.Send(dwhMessage);
+                }
+                catch (Exception ex)
+                {
+                    HistoryLog($"Discord messaging error: {ex.Message}");
+                    Debug.WriteLine($"Discord messaging error: {ex.Message}");
+                    Settings.Default.dwhEnabled = false;
+                    Settings.Default.Save();
+                }
+            }
+
+        }
+
+        private void btnShowDiscordSettings_Click(object sender, EventArgs e)
+        {
+            discordSettings = new DiscordSettings();
+            discordSettings.ShowDialog(this);
+            discordSettings.Dispose();
         }
     }
 }

@@ -86,7 +86,17 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="DiscordSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DiscordSettings.Designer.cs">
+      <DependentUpon>DiscordSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="Settings.cs" />
+    <EmbeddedResource Include="DiscordSettings.resx">
+      <DependentUpon>DiscordSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
       <SubType>Designer</SubType>

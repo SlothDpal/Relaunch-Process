@@ -53,6 +53,7 @@ namespace Process_Auto_Relaunch
             this.myBackgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.groupBoxHistory = new System.Windows.Forms.GroupBox();
             this.richTextBoxHistory = new System.Windows.Forms.RichTextBox();
+            this.btnShowDiscordSettings = new System.Windows.Forms.Button();
             this.groupBoxActions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.groupBoxProgramStart.SuspendLayout();
@@ -248,6 +249,7 @@ namespace Process_Auto_Relaunch
             this.groupBoxEnabled.Controls.Add(this.checkBoxSaveState);
             this.groupBoxEnabled.Controls.Add(this.radioButtonEnableWathing);
             this.groupBoxEnabled.Controls.Add(this.radioButtonDisableWathing);
+            this.groupBoxEnabled.Controls.Add(this.btnShowDiscordSettings);
             this.groupBoxEnabled.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.groupBoxEnabled.Location = new System.Drawing.Point(13, 345);
             this.groupBoxEnabled.Margin = new System.Windows.Forms.Padding(4);
@@ -354,6 +356,18 @@ namespace Process_Auto_Relaunch
             this.richTextBoxHistory.TabIndex = 0;
             this.richTextBoxHistory.Text = "";
             // 
+            // btnShowDiscordSettings
+            // 
+            this.btnShowDiscordSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnShowDiscordSettings.Location = new System.Drawing.Point(282, 16);
+            this.btnShowDiscordSettings.Margin = new System.Windows.Forms.Padding(4);
+            this.btnShowDiscordSettings.Name = "btnShowDiscordSettings";
+            this.btnShowDiscordSettings.Size = new System.Drawing.Size(89, 34);
+            this.btnShowDiscordSettings.TabIndex = 1;
+            this.btnShowDiscordSettings.Text = "Discord";
+            this.btnShowDiscordSettings.UseVisualStyleBackColor = true;
+            this.btnShowDiscordSettings.Click += new System.EventHandler(this.btnShowDiscordSettings_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -366,6 +380,7 @@ namespace Process_Auto_Relaunch
             this.Controls.Add(this.groupBoxProgramStart);
             this.Controls.Add(this.groupBoxActions);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
@@ -413,5 +428,6 @@ namespace Process_Auto_Relaunch
         private NumericUpDown numericUpDown1;
         private GroupBox groupBoxHistory;
         private RichTextBox richTextBoxHistory;
+        private Button btnShowDiscordSettings;
     }
 }

@@ -19,23 +19,19 @@ namespace RelaunchProcess
             InitializeComponent();
         }
 
-        private void DiscordSettings_Load(object sender, EventArgs e)
-        {
-            chbxDiscordEnabled.Checked=Settings.Default.dwhEnabled;
-            textDwhURL.Text=Settings.Default.dwhURL;
-        }
-
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void BtnCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
         }
 
-        private void btnOk_Click(object sender, EventArgs e)
+        private void BtnOk_Click(object sender, EventArgs e)
         {
-            if (Uri.IsWellFormedUriString(textDwhURL.Text, UriKind.Absolute))
+            if (Uri.IsWellFormedUriString(textDwhURL.Text, UriKind.Absolute)||textDwhURL.Text=="")
             {
-                Settings.Default.dwhEnabled = chbxDiscordEnabled.Checked;
-                Settings.Default.dwhURL = textDwhURL.Text;
+                if (textDwhURL.Text=="")
+                {
+                    chbxDiscordEnabled.Checked = false;
+                }
                 Settings.Default.Save();
                 DialogResult = DialogResult.OK;
                 Close();
@@ -43,9 +39,13 @@ namespace RelaunchProcess
             else 
             {
                 //TODO обработать ситуацию с неверным УРЛом
+                MessageBox.Show("Неверный формат URL.", "URL", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
 
-
+        private void BtnClearUrlField_Click(object sender, EventArgs e)
+        {
+            textDwhURL.Text = "";
         }
     }
 }

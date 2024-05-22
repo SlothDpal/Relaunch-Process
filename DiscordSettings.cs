@@ -39,6 +39,7 @@ namespace RelaunchProcess
             else 
             {
                 //TODO обработать ситуацию с неверным УРЛом
+                textDwhURL.Text = "";
                 MessageBox.Show("Неверный формат URL.", "URL", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

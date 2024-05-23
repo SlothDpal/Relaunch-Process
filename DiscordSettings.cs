@@ -26,9 +26,12 @@ namespace RelaunchProcess
 
         private void BtnOk_Click(object sender, EventArgs e)
         {
-            if (Uri.IsWellFormedUriString(textDwhURL.Text, UriKind.Absolute)||textDwhURL.Text=="")
+            if ( (String.IsNullOrEmpty(textDwhURL.Text) ||
+                Uri.IsWellFormedUriString(textDwhURL.Text, UriKind.Absolute)) &&
+                (String.IsNullOrEmpty(textDwhAvatarUrl.Text) || 
+                Uri.IsWellFormedUriString(textDwhAvatarUrl.Text, UriKind.Absolute)) )
             {
-                if (textDwhURL.Text=="")
+                if (String.IsNullOrEmpty(textDwhURL.Text))
                 {
                     chbxDiscordEnabled.Checked = false;
                 }
@@ -38,15 +41,14 @@ namespace RelaunchProcess
             }
             else 
             {
-                //TODO обработать ситуацию с неверным УРЛом
-                textDwhURL.Text = "";
-                MessageBox.Show("Неверный формат URL.", "URL", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Неверный формат URL.\rОчистите или исправьте.", "URL", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void BtnClearUrlField_Click(object sender, EventArgs e)
+        private void ClearUrl(object sender, EventArgs e)
         {
-            textDwhURL.Text = "";
+            if ( (Button)sender == btnClearUrlField ) textDwhURL.Text = "";
+            if ( (Button)sender == btnClearAvatarUrlField ) textDwhAvatarUrl.Text = "";
         }
     }
 }

@@ -40,7 +40,7 @@ namespace Process_Auto_Relaunch
             this.updateLogDelegate += this.HistoryLog;
             myBackgroundWorker.WorkerSupportsCancellation = true;
             dwhHook = new DiscordWebhook();
-            if ( Uri.IsWellFormedUriString(Settings.Default.dwhURL,UriKind.Absolute) && Settings.Default.dwhEnabled && Settings.Default.dwhURL!="") 
+            /*if ( Uri.IsWellFormedUriString(Settings.Default.dwhURL,UriKind.Absolute) && Settings.Default.dwhEnabled && Settings.Default.dwhURL!="") 
             {
                 dwhHook.Url = Settings.Default.dwhURL;
             }
@@ -49,7 +49,7 @@ namespace Process_Auto_Relaunch
                 HistoryLog($"Ошибка в URL веб-хука ({Settings.Default.dwhURL}). Вывод в Discord отключен.");
                 Settings.Default.dwhEnabled = false;
                 Settings.Default.Save();
-            }
+            }*/
 
         }
 
@@ -143,43 +143,59 @@ namespace Process_Auto_Relaunch
         /// <summary>
         /// Обновление статуса в программе
         /// </summary>
-        /// <param name="text">Текст для отображения</param>
-        /// <param name="add_history">Сохранение текста в окно истории</param>
+        /// <param name="text">Текст для отображения/отправки </param>
+        /// <param name="level">Флаги для назначения отправки</param>
         public void UpdateStatus( string text, NotifyLevel level )
         {
             if (!level.HasFlag(NotifyLevel.logAlways) && !level.HasFlag(NotifyLevel.logUpdateStatus)) return;
             labelStatus.Text = text;
         }
 
-        private void HistoryLog( string text, NotifyLevel level = NotifyLevel.logUpdateStatus )
+        /// <summary>
+        /// Добавление строки в Истории Запусков
+        /// </summary>
+        /// <param name="text">Текст для отображения/отправки </param>
+        /// <param name="level">Флаги для назначения отправки</param>
+        private void HistoryLog( string text, NotifyLevel level )
         {
             if (!level.HasFlag(NotifyLevel.logAlways) && !level.HasFlag(NotifyLevel.logHistory)) return;
             richTextBoxHistory.Text += DateTime.Now.ToString() + ": " + text + "\n";
         }
 
-        public void SendDiscordMessage( string message, NotifyLevel level )
+        /// <summary>
+        /// Отправка статуса в Discord
+        /// </summary>
+        /// <param name="text">Текст для отображения/отправки </param>
+        /// <param name="level">Флаги для назначения отправки</param>
+        public void SendDiscordMessage( string text, NotifyLevel level )
         {
             if (!level.HasFlag(NotifyLevel.logAlways) && !level.HasFlag(NotifyLevel.logDiscord)) return;
             if (Settings.Default.dwhEnabled)
             {
                 dwhHook.Url = Settings.Default.dwhURL;
-                dwhMessage.Username = "Relaunch process";
-                dwhMessage.Content = ":arrows_counterclockwise: " + message;
+                dwhMessage.Username = Settings.Default.dwhBotname;
+                dwhMessage.AvatarUrl = Settings.Default.dwhAvatarURL;
+                dwhMessage.Content = ":arrows_counterclockwise: " + text;
                 try
                 {
                     dwhHook.Send(dwhMessage);
                 }
                 catch (Exception ex)
                 {
-                    HistoryLog($"Discord messaging error: {ex.Message}");
+                    Status($"Ошибка отправки в дискорд.",NotifyLevel.logHistory);
                     Debug.WriteLine($"Discord messaging error: {ex.Message}");
-                    Settings.Default.dwhEnabled = false;
-                    Settings.Default.Save();
+                    //Settings.Default.dwhEnabled = false;
+                    //Settings.Default.Save();
                 }
             }
         }
 
-        public void Status(string text, NotifyLevel level)
+        /// <summary>
+        /// Обновление статуса в программе
+        /// </summary>
+        /// <param name="text">Текст для отображения/отправки </param>
+        /// <param name="level">Флаги для назначения отправки</param>
+        public void Status(string text, NotifyLevel level = NotifyLevel.logUpdateStatus)
         {
             updateLogDelegate.Invoke(text, level);
         }
@@ -204,7 +220,7 @@ namespace Process_Auto_Relaunch
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonSetProgramStart_Click(object sender, EventArgs e)
+        private void ButtonSetProgramStart_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFile = new OpenFileDialog();
             openFile.Filter = "Исполняемые файлы (*.exe)|*.exe";
@@ -305,12 +321,12 @@ namespace Process_Auto_Relaunch
         {
             if (e.Cancelled)
             {
-                Status("Наблюдение отменено.",NotifyLevel.logUpdateStatus);
+                Status("Наблюдение отменено.",NotifyLevel.logUpdateStatus|NotifyLevel.logDiscord);
             }
             else if (e.Error != null)
             {
+                Status("Произошла ошибка! Наблюдение остановлено.", NotifyLevel.logUpdateStatus | NotifyLevel.logDiscord);
                 MessageBox.Show("Error: " + e.Error.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                Status("Произошла ошибка! Наблюдение остановлено.", NotifyLevel.logUpdateStatus|NotifyLevel.logDiscord);
                 radioButtonDisableWathing.Checked = true;
             }
             else

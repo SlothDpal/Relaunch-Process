@@ -166,7 +166,7 @@ namespace Process_Auto_Relaunch
             this.buttonSetProgramStart.TabIndex = 1;
             this.buttonSetProgramStart.Text = "Обзор";
             this.buttonSetProgramStart.UseVisualStyleBackColor = true;
-            this.buttonSetProgramStart.Click += new System.EventHandler(this.buttonSetProgramStart_Click);
+            this.buttonSetProgramStart.Click += new System.EventHandler(this.ButtonSetProgramStart_Click);
             // 
             // groupBoxProgramStart
             // 

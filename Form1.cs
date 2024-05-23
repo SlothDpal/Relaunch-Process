@@ -274,7 +274,7 @@ namespace Process_Auto_Relaunch
                 }
             }
 
-            Status("Процесс был запущен.", NotifyLevel.logUpdateStatus);
+            Status("Процесс был запущен.", NotifyLevel.logAlways);
             Process.Start(path, args);
         }
 

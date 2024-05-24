@@ -90,7 +90,8 @@ namespace Discord.Webhook
 
             try
             {
-                webhookRequest.UploadData(this.Url, stream.ToArray());
+                Uri uri = new Uri(this.Url);
+                webhookRequest.UploadData(uri, stream.ToArray());
             }
             catch (WebException ex)
             {

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,24 @@ namespace RelaunchProcess
         public DiscordSettings()
         {
             InitializeComponent();
+            RestoreSettings();
+        }
+
+        private void RestoreSettings()
+        {
+            textDwhBotName.Text = Settings.Default.dwhBotname;
+            textDwhAvatarUrl.Text = Settings.Default.dwhAvatarURL;
+            textDwhURL.Text = Settings.Default.dwhURL;
+            chbxDiscordEnabled.Checked = Settings.Default.dwhEnabled;
+        }
+
+        private void SaveSettings()
+        {
+            Settings.Default.dwhBotname = textDwhBotName.Text;
+            Settings.Default.dwhAvatarURL = textDwhAvatarUrl.Text;
+            Settings.Default.dwhURL = textDwhURL.Text;
+            Settings.Default.dwhEnabled = chbxDiscordEnabled.Checked;
+            Settings.Default.Save();
         }
 
         private void BtnCancel_Click(object sender, EventArgs e)
@@ -35,7 +54,7 @@ namespace RelaunchProcess
                 {
                     chbxDiscordEnabled.Checked = false;
                 }
-                Settings.Default.Save();
+                SaveSettings();
                 DialogResult = DialogResult.OK;
                 Close();
             }

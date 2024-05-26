@@ -103,37 +103,29 @@
             // 
             // textDwhAvatarUrl
             // 
-            this.textDwhAvatarUrl.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::RelaunchProcess.Properties.Settings.Default, "dwhAvatarURL", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.textDwhAvatarUrl.Location = new System.Drawing.Point(9, 64);
             this.textDwhAvatarUrl.Name = "textDwhAvatarUrl";
             this.textDwhAvatarUrl.Size = new System.Drawing.Size(337, 20);
             this.textDwhAvatarUrl.TabIndex = 7;
-            this.textDwhAvatarUrl.Text = global::RelaunchProcess.Properties.Settings.Default.dwhAvatarURL;
             // 
             // textDwhBotName
             // 
-            this.textDwhBotName.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::RelaunchProcess.Properties.Settings.Default, "dwhBotname", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.textDwhBotName.Location = new System.Drawing.Point(9, 25);
             this.textDwhBotName.MaxLength = 40;
             this.textDwhBotName.Name = "textDwhBotName";
             this.textDwhBotName.Size = new System.Drawing.Size(211, 20);
             this.textDwhBotName.TabIndex = 7;
-            this.textDwhBotName.Text = global::RelaunchProcess.Properties.Settings.Default.dwhBotname;
             // 
             // textDwhURL
             // 
-            this.textDwhURL.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::RelaunchProcess.Properties.Settings.Default, "dwhURL", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.textDwhURL.Location = new System.Drawing.Point(9, 103);
             this.textDwhURL.Name = "textDwhURL";
             this.textDwhURL.Size = new System.Drawing.Size(337, 20);
             this.textDwhURL.TabIndex = 3;
-            this.textDwhURL.Text = global::RelaunchProcess.Properties.Settings.Default.dwhURL;
             // 
             // chbxDiscordEnabled
             // 
             this.chbxDiscordEnabled.AutoSize = true;
-            this.chbxDiscordEnabled.Checked = global::RelaunchProcess.Properties.Settings.Default.dwhEnabled;
-            this.chbxDiscordEnabled.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::RelaunchProcess.Properties.Settings.Default, "dwhEnabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.chbxDiscordEnabled.Location = new System.Drawing.Point(9, 129);
             this.chbxDiscordEnabled.Name = "chbxDiscordEnabled";
             this.chbxDiscordEnabled.Size = new System.Drawing.Size(232, 17);

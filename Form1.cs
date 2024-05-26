@@ -22,10 +22,10 @@ namespace Process_Auto_Relaunch
         public enum NotifyLevel
         {
             logNone = 0,
-            logAlways = 1,          // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
-            logUpdateStatus = 2,    // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
-            logHistory = 4,         // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
-            logDiscord = 8          // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+            logAlways = 1,          // писать везде
+            logUpdateStatus = 2,    // писать в строке состояния
+            logHistory = 4,         // писать в окне истории перезапусков
+            logDiscord = 8          // писать в Дискорд
         }
         private delegate void UpdateLogDelegate(string text, NotifyLevel level = NotifyLevel.logUpdateStatus);
         private readonly UpdateLogDelegate updateLogDelegate;
@@ -45,8 +45,8 @@ namespace Process_Auto_Relaunch
                 dwhHook.Url = Settings.Default.dwhURL;
             }
             else if (Settings.Default.dwhEnabled) { 
-                Debug.WriteLine($"пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ URL пїЅпїЅпїЅ-пїЅпїЅпїЅпїЅ ({Settings.Default.dwhURL}). пїЅпїЅпїЅпїЅпїЅ пїЅ Discord пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.");
-                HistoryLog($"пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ URL пїЅпїЅпїЅ-пїЅпїЅпїЅпїЅ ({Settings.Default.dwhURL}). пїЅпїЅпїЅпїЅпїЅ пїЅ Discord пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.");
+                Debug.WriteLine($"Ошибка в URL веб-хука ({Settings.Default.dwhURL}). Вывод в Discord отключен.");
+                HistoryLog($"Ошибка в URL веб-хука ({Settings.Default.dwhURL}). Вывод в Discord отключен.");
                 Settings.Default.dwhEnabled = false;
                 Settings.Default.Save();
             }*/
@@ -54,7 +54,7 @@ namespace Process_Auto_Relaunch
         }
 
         /// <summary>
-        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+        /// Событие запуска формы
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -68,7 +68,7 @@ namespace Process_Auto_Relaunch
         }
 
         /// <summary>
-        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+        /// Восстановление настроек
         /// </summary>
         private void LoadOldState()
         {
@@ -80,7 +80,7 @@ namespace Process_Auto_Relaunch
         }
 
         /// <summary>
-        /// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+        /// Метод для события отключения
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -96,12 +96,12 @@ namespace Process_Auto_Relaunch
             if (myBackgroundWorker.WorkerSupportsCancellation && myBackgroundWorker.IsBusy)
             {
                 myBackgroundWorker.CancelAsync();
-                UpdateStatus("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ...",NotifyLevel.logUpdateStatus);
+                UpdateStatus("Отменяем...",NotifyLevel.logUpdateStatus);
             }
         }
 
         /// <summary>
-        /// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+        /// Метод для события включения
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -116,15 +116,15 @@ namespace Process_Auto_Relaunch
             if (String.IsNullOrEmpty(textBoxProcessName.Text))
             {
                 error = true;
-                MessageBox.Show("пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ!" +
-                    "\nпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅпїЅ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Имя процесса не может быть пустым!" +
+                    "\nУкажите имя процесса", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             if (String.IsNullOrEmpty(Settings.Default.startProgramPath))
             {
                 error = true;
-                MessageBox.Show("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ." +
-                    "\nпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅпїЅ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Программа для запуска не указана." +
+                    "\nУкажите программу для запуска", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             if (error)
@@ -137,14 +137,15 @@ namespace Process_Auto_Relaunch
             if (!myBackgroundWorker.IsBusy)
             {
                 myBackgroundWorker.RunWorkerAsync();
+                Status($"Запускаем наблюдение...", NotifyLevel.logDiscord);
             }
         }
 
         /// <summary>
-        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+        /// Обновление статуса в программе
         /// </summary>
-        /// <param name="text">пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ </param>
-        /// <param name="level">пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</param>
+        /// <param name="text">Текст для отображения/отправки </param>
+        /// <param name="level">Флаги для назначения отправки</param>
         public void UpdateStatus( string text, NotifyLevel level )
         {
             if (!level.HasFlag(NotifyLevel.logAlways) && !level.HasFlag(NotifyLevel.logUpdateStatus)) return;
@@ -152,10 +153,10 @@ namespace Process_Auto_Relaunch
         }
 
         /// <summary>
-        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+        /// Добавление строки в Истории Запусков
         /// </summary>
-        /// <param name="text">пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ </param>
-        /// <param name="level">пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</param>
+        /// <param name="text">Текст для отображения/отправки </param>
+        /// <param name="level">Флаги для назначения отправки</param>
         private void HistoryLog( string text, NotifyLevel level )
         {
             if (!level.HasFlag(NotifyLevel.logAlways) && !level.HasFlag(NotifyLevel.logHistory)) return;
@@ -163,10 +164,10 @@ namespace Process_Auto_Relaunch
         }
 
         /// <summary>
-        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ Discord
+        /// Отправка статуса в Discord
         /// </summary>
-        /// <param name="text">пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ </param>
-        /// <param name="level">пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</param>
+        /// <param name="text">Текст для отображения/отправки </param>
+        /// <param name="level">Флаги для назначения отправки</param>
         public void SendDiscordMessage( string text, NotifyLevel level )
         {
             if (!level.HasFlag(NotifyLevel.logAlways) && !level.HasFlag(NotifyLevel.logDiscord)) return;
@@ -182,7 +183,7 @@ namespace Process_Auto_Relaunch
                 }
                 catch (Exception ex)
                 {
-                    Status($"пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.",NotifyLevel.logHistory);
+                    Status($"Ошибка отправки в дискорд.",NotifyLevel.logHistory);
                     Debug.WriteLine($"Discord messaging error: {ex.Message}");
                     //Settings.Default.dwhEnabled = false;
                     //Settings.Default.Save();
@@ -191,10 +192,10 @@ namespace Process_Auto_Relaunch
         }
 
         /// <summary>
-        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+        /// Обновление статуса в программе
         /// </summary>
-        /// <param name="text">пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ </param>
-        /// <param name="level">пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</param>
+        /// <param name="text">Текст для отображения/отправки </param>
+        /// <param name="level">Флаги для назначения отправки</param>
         public void Status(string text, NotifyLevel level = NotifyLevel.logUpdateStatus)
         {
             Invoke(updateLogDelegate, text, level);
@@ -203,12 +204,12 @@ namespace Process_Auto_Relaunch
         private void CheckProgramState()
         {
             bool watching = radioButtonEnableWathing.Checked;
-            Debug.WriteLine($"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: {watching}");
+            Debug.WriteLine($"Наблюдение: {watching}");
 
             groupBoxProcessName.Enabled = !watching;
             groupBoxProgramStart.Enabled = !watching;
             groupBoxActions.Enabled = !watching;
-            btnShowDiscordSettings.Enabled = !watching; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+            btnShowDiscordSettings.Enabled = !watching; //отключаем кнопку настроек дискорда
 
             Settings.Default.enableWatching = watching;
 
@@ -216,15 +217,15 @@ namespace Process_Auto_Relaunch
         }
 
         /// <summary>
-        /// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+        /// Выбор файла для запуска
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ButtonSetProgramStart_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFile = new OpenFileDialog();
-            openFile.Filter = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ (*.exe)|*.exe";
-            openFile.Title = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
+            openFile.Filter = "Исполняемые файлы (*.exe)|*.exe";
+            openFile.Title = "Укажите программу запуска";
 
             if (openFile.ShowDialog() == DialogResult.Cancel)
             {
@@ -240,7 +241,7 @@ namespace Process_Auto_Relaunch
         }
 
         /// <summary>
-        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+        /// Событие перед закрытием формы
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -274,7 +275,7 @@ namespace Process_Auto_Relaunch
                 }
             }
 
-            Status("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.", NotifyLevel.logAlways);
+            Status("Процесс был запущен.", NotifyLevel.logAlways);
             Process.Start(path, args);
         }
 
@@ -287,23 +288,23 @@ namespace Process_Auto_Relaunch
             {
                 if (ProcessByNameIsRuning(textBoxProcessName.Text))
                 {
-                    Status($"пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ",NotifyLevel.logUpdateStatus);
-                    if (i < (int)numericUpDown1.Value) SendDiscordMessage($"пїЅпїЅпїЅпїЅпїЅпїЅпїЅ {textBoxProcessName.Text} пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.",NotifyLevel.logDiscord);
+                    Status($"Процесс уже запущен",NotifyLevel.logUpdateStatus);
+                    if (i < (int)numericUpDown1.Value) SendDiscordMessage($"Процесс {textBoxProcessName.Text} запущен.",NotifyLevel.logDiscord);
                     i = (int)numericUpDown1.Value;
                 }
                 else
                 {
                     if (radioButtonRestartTimer.Checked)
                     {
-                        if (i==(int)numericUpDown1.Value) Status($"пїЅпїЅпїЅпїЅпїЅпїЅпїЅ {textBoxProcessName.Text} пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ {i} пїЅпїЅпїЅ",NotifyLevel.logDiscord);
+                        if (i==(int)numericUpDown1.Value) Status($"Процесс {textBoxProcessName.Text} не найден. Запуск через {i} сек",NotifyLevel.logDiscord);
                         i--;
-                        Status($"пїЅпїЅпїЅпїЅпїЅпїЅпїЅ {textBoxProcessName.Text} пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ {i}", NotifyLevel.logUpdateStatus);
+                        Status($"Процесс {textBoxProcessName.Text} не найден. Запуск через {i}", NotifyLevel.logUpdateStatus);
                     }
 
                     if (i <= 0 || radioButtonRestartNow.Checked)
                     {
                         i = (int)numericUpDown1.Value;
-                        Status($"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ {textBoxProcessName.Text}", NotifyLevel.logUpdateStatus|NotifyLevel.logDiscord);
+                        Status($"Запускаем {textBoxProcessName.Text}", NotifyLevel.logUpdateStatus|NotifyLevel.logDiscord);
                         ProcessStart(Settings.Default.startProgramPath, textBoxArguments.Text);
                     }
                 }
@@ -321,17 +322,17 @@ namespace Process_Auto_Relaunch
         {
             if (e.Cancelled)
             {
-                Status("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.",NotifyLevel.logUpdateStatus|NotifyLevel.logDiscord);
+                Status("Наблюдение отменено.",NotifyLevel.logUpdateStatus|NotifyLevel.logDiscord);
             }
             else if (e.Error != null)
             {
-                Status("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ! пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.", NotifyLevel.logUpdateStatus | NotifyLevel.logDiscord);
-                MessageBox.Show("Error: " + e.Error.Message, "пїЅпїЅпїЅпїЅпїЅпїЅ", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                Status("Произошла ошибка! Наблюдение остановлено.", NotifyLevel.logUpdateStatus | NotifyLevel.logDiscord);
+                MessageBox.Show("Error: " + e.Error.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 radioButtonDisableWathing.Checked = true;
             }
             else
             {
-                Status("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.", NotifyLevel.logUpdateStatus|NotifyLevel.logDiscord);
+                Status("Наблюдение остановлено.", NotifyLevel.logUpdateStatus|NotifyLevel.logDiscord);
             }
         }
 

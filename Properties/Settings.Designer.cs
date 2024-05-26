@@ -12,7 +12,7 @@ namespace RelaunchProcess.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.9.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.10.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -116,6 +116,55 @@ namespace RelaunchProcess.Properties {
             }
             set {
                 this["timer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string dwhURL {
+            get {
+                return ((string)(this["dwhURL"]));
+            }
+            set {
+                this["dwhURL"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool dwhEnabled {
+            get {
+                return ((bool)(this["dwhEnabled"]));
+            }
+            set {
+                this["dwhEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Relauncher")]
+        public string dwhBotname {
+            get {
+                return ((string)(this["dwhBotname"]));
+            }
+            set {
+                this["dwhBotname"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://distribution.faceit-cdn.net/images/7240adfa-6bda-43a0-abd0-8c599f176686.j" +
+            "peg")]
+        public string dwhAvatarURL {
+            get {
+                return ((string)(this["dwhAvatarURL"]));
+            }
+            set {
+                this["dwhAvatarURL"] = value;
             }
         }
     }

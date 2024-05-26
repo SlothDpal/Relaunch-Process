@@ -48,6 +48,7 @@ namespace Process_Auto_Relaunch
             this.checkBoxSaveState = new System.Windows.Forms.CheckBox();
             this.radioButtonEnableWathing = new System.Windows.Forms.RadioButton();
             this.radioButtonDisableWathing = new System.Windows.Forms.RadioButton();
+            this.btnShowDiscordSettings = new System.Windows.Forms.Button();
             this.groupBoxStatus = new System.Windows.Forms.GroupBox();
             this.labelStatus = new System.Windows.Forms.Label();
             this.myBackgroundWorker = new System.ComponentModel.BackgroundWorker();
@@ -165,7 +166,7 @@ namespace Process_Auto_Relaunch
             this.buttonSetProgramStart.TabIndex = 1;
             this.buttonSetProgramStart.Text = "Обзор";
             this.buttonSetProgramStart.UseVisualStyleBackColor = true;
-            this.buttonSetProgramStart.Click += new System.EventHandler(this.buttonSetProgramStart_Click);
+            this.buttonSetProgramStart.Click += new System.EventHandler(this.ButtonSetProgramStart_Click);
             // 
             // groupBoxProgramStart
             // 
@@ -248,6 +249,7 @@ namespace Process_Auto_Relaunch
             this.groupBoxEnabled.Controls.Add(this.checkBoxSaveState);
             this.groupBoxEnabled.Controls.Add(this.radioButtonEnableWathing);
             this.groupBoxEnabled.Controls.Add(this.radioButtonDisableWathing);
+            this.groupBoxEnabled.Controls.Add(this.btnShowDiscordSettings);
             this.groupBoxEnabled.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.groupBoxEnabled.Location = new System.Drawing.Point(13, 345);
             this.groupBoxEnabled.Margin = new System.Windows.Forms.Padding(4);
@@ -300,6 +302,18 @@ namespace Process_Auto_Relaunch
             this.radioButtonDisableWathing.Text = "Выключено";
             this.radioButtonDisableWathing.UseVisualStyleBackColor = true;
             this.radioButtonDisableWathing.CheckedChanged += new System.EventHandler(this.radioButtonDisableWathing_CheckedChanged);
+            // 
+            // btnShowDiscordSettings
+            // 
+            this.btnShowDiscordSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnShowDiscordSettings.Location = new System.Drawing.Point(282, 16);
+            this.btnShowDiscordSettings.Margin = new System.Windows.Forms.Padding(4);
+            this.btnShowDiscordSettings.Name = "btnShowDiscordSettings";
+            this.btnShowDiscordSettings.Size = new System.Drawing.Size(89, 34);
+            this.btnShowDiscordSettings.TabIndex = 1;
+            this.btnShowDiscordSettings.Text = "Webhook";
+            this.btnShowDiscordSettings.UseVisualStyleBackColor = true;
+            this.btnShowDiscordSettings.Click += new System.EventHandler(this.btnShowDiscordSettings_Click);
             // 
             // groupBoxStatus
             // 
@@ -366,6 +380,7 @@ namespace Process_Auto_Relaunch
             this.Controls.Add(this.groupBoxProgramStart);
             this.Controls.Add(this.groupBoxActions);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
@@ -413,5 +428,6 @@ namespace Process_Auto_Relaunch
         private NumericUpDown numericUpDown1;
         private GroupBox groupBoxHistory;
         private RichTextBox richTextBoxHistory;
+        private Button btnShowDiscordSettings;
     }
 }

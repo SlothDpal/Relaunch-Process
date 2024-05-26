@@ -337,8 +337,8 @@ namespace Process_Auto_Relaunch
 
         private void btnShowDiscordSettings_Click(object sender, EventArgs e)
         {
-            DiscordSettings discordSettings;
-            discordSettings = new DiscordSettings();
+            WebhookSettings discordSettings;
+            discordSettings = new WebhookSettings();
             discordSettings.ShowDialog(this);
             discordSettings.Dispose();
         }

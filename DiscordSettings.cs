@@ -13,9 +13,9 @@ using RelaunchProcess.Properties;
 
 namespace RelaunchProcess
 {
-    public partial class DiscordSettings : Form
+    public partial class WebhookSettings : Form
     {
-        public DiscordSettings()
+        public WebhookSettings()
         {
             InitializeComponent();
             RestoreSettings();
@@ -36,6 +36,16 @@ namespace RelaunchProcess
             Settings.Default.dwhURL = textDwhURL.Text;
             Settings.Default.dwhEnabled = chbxDiscordEnabled.Checked;
             Settings.Default.Save();
+        }
+
+        public void UpdateUI()
+        {
+            groupBoxSettingsDiscord.Enabled = !chbxDiscordEnabled.Checked;
+        }
+
+        private void WebhookSettings_FormLoad(object sender, EventArgs e)
+        {
+            UpdateUI();
         }
 
         private void BtnCancel_Click(object sender, EventArgs e)
@@ -68,6 +78,11 @@ namespace RelaunchProcess
         {
             if ( (Button)sender == btnClearUrlField ) textDwhURL.Text = "";
             if ( (Button)sender == btnClearAvatarUrlField ) textDwhAvatarUrl.Text = "";
+        }
+
+        private void chbxDiscordEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateUI();
         }
     }
 }

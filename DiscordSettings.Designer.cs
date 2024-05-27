@@ -1,4 +1,4 @@
-﻿namespace RelaunchProcess
+namespace RelaunchProcess
 {
     partial class WebhookSettings
     {

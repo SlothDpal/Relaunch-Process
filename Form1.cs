@@ -272,9 +272,9 @@ namespace Process_Auto_Relaunch
             }
 
             WatchedProcess=Process.Start(path, args);
+            cpuLastTime = 0;
             cpuMeasureTimer.Start();
             Status("Процесс был запущен.", NotifyLevel.logAlways);
-            Process.Start(path, args);
         }
 
         private void BackgroundWorkerDoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
@@ -290,14 +290,17 @@ namespace Process_Auto_Relaunch
                     double cpuTotalTime = WatchedProcess.TotalProcessorTime.TotalMilliseconds - cpuLastTime;
                     cpuLastTime = WatchedProcess.TotalProcessorTime.TotalMilliseconds;
                     double cpuPercent = cpuTotalTime * 100 /  (Environment.ProcessorCount * cpuMeasureTimer.ElapsedMilliseconds);
+                    string ProcessAnswer = (WatchedProcess.Responding)?"Активен":"Неактивен";
                     cpuMeasureTimer.Reset();
                     cpuMeasureTimer.Start();
-                    Status($"Процесс уже запущен. CPU: {cpuPercent:f2}% {cpuTotalTime:f2}мсек",NotifyLevel.logUpdateStatus);
+                    Status($"Процесс уже запущен.",NotifyLevel.logUpdateStatus);
+                    processInformationLabel.Text = $"Интерфейс: {ProcessAnswer}. ЦПУ: {cpuPercent:f2}% {cpuTotalTime:f2}мсек";
                     if (i < (int)numericUpDown1.Value) SendDiscordMessage($"Процесс {textBoxProcessName.Text} запущен.",NotifyLevel.logDiscord);
                     i = (int)numericUpDown1.Value;
                 }
                 else
                 {
+                    processInformationLabel.Text = "";
                     if (radioButtonRestartTimer.Checked)
                     {
                         if (i==(int)numericUpDown1.Value) Status($"Процесс {textBoxProcessName.Text} не найден. Запуск через {i} сек",NotifyLevel.logDiscord);
@@ -319,6 +322,7 @@ namespace Process_Auto_Relaunch
             if (worker.CancellationPending)
             {
                 e.Cancel = true;
+                processInformationLabel.Text = "";
             }
         }
 

@@ -31,6 +31,9 @@ namespace Process_Auto_Relaunch
         private readonly UpdateLogDelegate updateLogDelegate;
         private DiscordWebhook dwhHook;
         private DiscordMessage dwhMessage;
+        private Process WatchedProcess;
+        private double cpuLastTime = 0;
+        private Stopwatch cpuMeasureTimer;
 
         public Form1()
         {
@@ -40,17 +43,7 @@ namespace Process_Auto_Relaunch
             this.updateLogDelegate += this.HistoryLog;
             myBackgroundWorker.WorkerSupportsCancellation = true;
             dwhHook = new DiscordWebhook();
-            /*if ( Uri.IsWellFormedUriString(Settings.Default.dwhURL,UriKind.Absolute) && Settings.Default.dwhEnabled && Settings.Default.dwhURL!="") 
-            {
-                dwhHook.Url = Settings.Default.dwhURL;
-            }
-            else if (Settings.Default.dwhEnabled) { 
-                Debug.WriteLine($"Ошибка в URL веб-хука ({Settings.Default.dwhURL}). Вывод в Discord отключен.");
-                HistoryLog($"Ошибка в URL веб-хука ({Settings.Default.dwhURL}). Вывод в Discord отключен.");
-                Settings.Default.dwhEnabled = false;
-                Settings.Default.Save();
-            }*/
-
+            cpuMeasureTimer = new Stopwatch();
         }
 
         /// <summary>
@@ -248,6 +241,7 @@ namespace Process_Auto_Relaunch
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             Settings.Default.Save();
+            Status("Программа закрыта.", NotifyLevel.logAlways);
         }
 
         private bool ProcessByNameIsRuning(string name)
@@ -258,9 +252,11 @@ namespace Process_Auto_Relaunch
             {
                 Debug.WriteLine($"Found proces: {process.ProcessName}. Session Id: {process.SessionId}. Current Session Id: {sessionid}");
                 if (process.SessionId == sessionid)
+                {
+                    WatchedProcess = process;
                     return true;
+                }
             }
-
             Debug.WriteLine($"Process {name} for current session id {sessionid} not found");
             return false;
         }
@@ -276,7 +272,8 @@ namespace Process_Auto_Relaunch
             }
 
             Status("Процесс был запущен.", NotifyLevel.logAlways);
-            Process.Start(path, args);
+            WatchedProcess=Process.Start(path, args);
+            cpuMeasureTimer.Start();
         }
 
         private void BackgroundWorkerDoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
@@ -288,7 +285,13 @@ namespace Process_Auto_Relaunch
             {
                 if (ProcessByNameIsRuning(textBoxProcessName.Text))
                 {
-                    Status($"Процесс уже запущен",NotifyLevel.logUpdateStatus);
+                    cpuMeasureTimer.Stop();
+                    double cpuTotalTime = WatchedProcess.TotalProcessorTime.TotalMilliseconds - cpuLastTime;
+                    cpuLastTime = WatchedProcess.TotalProcessorTime.TotalMilliseconds;
+                    double cpuPercent = cpuTotalTime * 100 /  (Environment.ProcessorCount * cpuMeasureTimer.ElapsedMilliseconds);
+                    cpuMeasureTimer.Reset();
+                    cpuMeasureTimer.Start();
+                    Status($"Процесс уже запущен. CPU: {cpuPercent:f2}% {cpuTotalTime:f2}мсек",NotifyLevel.logUpdateStatus);
                     if (i < (int)numericUpDown1.Value) SendDiscordMessage($"Процесс {textBoxProcessName.Text} запущен.",NotifyLevel.logDiscord);
                     i = (int)numericUpDown1.Value;
                 }

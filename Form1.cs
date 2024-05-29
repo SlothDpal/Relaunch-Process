@@ -347,8 +347,9 @@ namespace Process_Auto_Relaunch
             }
             else if (e.Error != null)
             {
-                Status("Произошла ошибка! Наблюдение остановлено. Error: " + e.Error.Message + " Stack trace: " + e.Error.StackTrace, NotifyLevel.logUpdateStatus | NotifyLevel.logDiscord | NotifyLevel.logHistory);
-                MessageBox.Show("Error: " + e.Error.Message + "/n" + e.Error.StackTrace, "Ошибка наблюдения", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                string error_message = "Error: " + e.Error.Message + "\n" + e.Error.StackTrace;
+                Status("Произошла ошибка! Наблюдение остановлено.\n" + error_message, NotifyLevel.logUpdateStatus | NotifyLevel.logDiscord);
+                MessageBox.Show(error_message, "Ошибка наблюдения", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 radioButtonDisableWathing.Checked = true;
             }
             else

@@ -54,6 +54,8 @@ namespace Process_Auto_Relaunch
             this.myBackgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.groupBoxHistory = new System.Windows.Forms.GroupBox();
             this.richTextBoxHistory = new System.Windows.Forms.RichTextBox();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.processInformationLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBoxActions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.groupBoxProgramStart.SuspendLayout();
@@ -61,6 +63,7 @@ namespace Process_Auto_Relaunch
             this.groupBoxEnabled.SuspendLayout();
             this.groupBoxStatus.SuspendLayout();
             this.groupBoxHistory.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxActions
@@ -76,7 +79,7 @@ namespace Process_Auto_Relaunch
             this.groupBoxActions.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxActions.Name = "groupBoxActions";
             this.groupBoxActions.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBoxActions.Size = new System.Drawing.Size(383, 111);
+            this.groupBoxActions.Size = new System.Drawing.Size(382, 111);
             this.groupBoxActions.TabIndex = 0;
             this.groupBoxActions.TabStop = false;
             this.groupBoxActions.Text = "Действие после отсутствия процесса";
@@ -180,7 +183,7 @@ namespace Process_Auto_Relaunch
             this.groupBoxProgramStart.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxProgramStart.Name = "groupBoxProgramStart";
             this.groupBoxProgramStart.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBoxProgramStart.Size = new System.Drawing.Size(383, 139);
+            this.groupBoxProgramStart.Size = new System.Drawing.Size(382, 139);
             this.groupBoxProgramStart.TabIndex = 6;
             this.groupBoxProgramStart.TabStop = false;
             this.groupBoxProgramStart.Text = "Запуск программы";
@@ -225,7 +228,7 @@ namespace Process_Auto_Relaunch
             this.groupBoxProcessName.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxProcessName.Name = "groupBoxProcessName";
             this.groupBoxProcessName.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBoxProcessName.Size = new System.Drawing.Size(383, 62);
+            this.groupBoxProcessName.Size = new System.Drawing.Size(382, 62);
             this.groupBoxProcessName.TabIndex = 8;
             this.groupBoxProcessName.TabStop = false;
             this.groupBoxProcessName.Text = "Название наблюдаемого процесса (без расширения)";
@@ -238,7 +241,7 @@ namespace Process_Auto_Relaunch
             this.textBoxProcessName.Location = new System.Drawing.Point(7, 25);
             this.textBoxProcessName.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxProcessName.Name = "textBoxProcessName";
-            this.textBoxProcessName.Size = new System.Drawing.Size(368, 22);
+            this.textBoxProcessName.Size = new System.Drawing.Size(367, 22);
             this.textBoxProcessName.TabIndex = 3;
             this.textBoxProcessName.Text = global::RelaunchProcess.Properties.Settings.Default.processName;
             // 
@@ -255,7 +258,7 @@ namespace Process_Auto_Relaunch
             this.groupBoxEnabled.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxEnabled.Name = "groupBoxEnabled";
             this.groupBoxEnabled.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBoxEnabled.Size = new System.Drawing.Size(383, 89);
+            this.groupBoxEnabled.Size = new System.Drawing.Size(382, 89);
             this.groupBoxEnabled.TabIndex = 9;
             this.groupBoxEnabled.TabStop = false;
             this.groupBoxEnabled.Text = "Состояние";
@@ -324,7 +327,7 @@ namespace Process_Auto_Relaunch
             this.groupBoxStatus.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxStatus.Name = "groupBoxStatus";
             this.groupBoxStatus.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBoxStatus.Size = new System.Drawing.Size(383, 64);
+            this.groupBoxStatus.Size = new System.Drawing.Size(382, 64);
             this.groupBoxStatus.TabIndex = 10;
             this.groupBoxStatus.TabStop = false;
             this.groupBoxStatus.Text = "Текущий статус";
@@ -352,7 +355,7 @@ namespace Process_Auto_Relaunch
             this.groupBoxHistory.Controls.Add(this.richTextBoxHistory);
             this.groupBoxHistory.Location = new System.Drawing.Point(13, 514);
             this.groupBoxHistory.Name = "groupBoxHistory";
-            this.groupBoxHistory.Size = new System.Drawing.Size(383, 132);
+            this.groupBoxHistory.Size = new System.Drawing.Size(382, 148);
             this.groupBoxHistory.TabIndex = 11;
             this.groupBoxHistory.TabStop = false;
             this.groupBoxHistory.Text = "История запусков";
@@ -361,18 +364,35 @@ namespace Process_Auto_Relaunch
             // 
             this.richTextBoxHistory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.richTextBoxHistory.Location = new System.Drawing.Point(0, 21);
+            this.richTextBoxHistory.Location = new System.Drawing.Point(7, 21);
             this.richTextBoxHistory.Name = "richTextBoxHistory";
             this.richTextBoxHistory.ReadOnly = true;
-            this.richTextBoxHistory.Size = new System.Drawing.Size(383, 111);
+            this.richTextBoxHistory.Size = new System.Drawing.Size(369, 120);
             this.richTextBoxHistory.TabIndex = 0;
             this.richTextBoxHistory.Text = "";
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.processInformationLabel});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 665);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(420, 22);
+            this.statusStrip1.TabIndex = 12;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // processInformationLabel
+            // 
+            this.processInformationLabel.Name = "processInformationLabel";
+            this.processInformationLabel.Size = new System.Drawing.Size(16, 17);
+            this.processInformationLabel.Text = "   ";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(421, 658);
+            this.ClientSize = new System.Drawing.Size(420, 687);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.groupBoxHistory);
             this.Controls.Add(this.groupBoxStatus);
             this.Controls.Add(this.groupBoxEnabled);
@@ -400,7 +420,10 @@ namespace Process_Auto_Relaunch
             this.groupBoxStatus.ResumeLayout(false);
             this.groupBoxStatus.PerformLayout();
             this.groupBoxHistory.ResumeLayout(false);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -429,5 +452,7 @@ namespace Process_Auto_Relaunch
         private GroupBox groupBoxHistory;
         private RichTextBox richTextBoxHistory;
         private Button btnShowDiscordSettings;
+        private StatusStrip statusStrip1;
+        private ToolStripStatusLabel processInformationLabel;
     }
 }

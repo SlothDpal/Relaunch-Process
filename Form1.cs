@@ -335,7 +335,7 @@ namespace Process_Auto_Relaunch
             else if (e.Error != null)
             {
                 Status("Произошла ошибка! Наблюдение остановлено.", NotifyLevel.logUpdateStatus | NotifyLevel.logDiscord);
-                MessageBox.Show("Error: " + e.Error.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show("Error: " + e.Error.Message + "/n" + e.Error.StackTrace, "Ошибка наблюдения", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 radioButtonDisableWathing.Checked = true;
             }
             else

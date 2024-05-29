@@ -241,7 +241,7 @@ namespace Process_Auto_Relaunch
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             Settings.Default.Save();
-            Status("Приложение закрыто.", NotifyLevel.logAlways);
+            Status("Наюлюдение отменено - приложение закрыто.", NotifyLevel.logAlways);
         }
 
         private bool ProcessByNameIsRuning(string name)

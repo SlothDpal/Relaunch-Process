@@ -241,7 +241,7 @@ namespace Process_Auto_Relaunch
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             Settings.Default.Save();
-            Status("Наюлюдение отменено - приложение закрыто.", NotifyLevel.logAlways);
+            Status("Наблюдение отменено - приложение закрыто.", NotifyLevel.logAlways);
         }
 
         private bool ProcessByNameIsRuning(string name)
@@ -286,13 +286,26 @@ namespace Process_Auto_Relaunch
             {
                 if (ProcessByNameIsRuning(textBoxProcessName.Text))
                 {
+                    double cpuTotalTime, cpuPercent;
+                    string ProcessAnswer;
+
                     cpuMeasureTimer.Stop();
-                    double cpuTotalTime = WatchedProcess.TotalProcessorTime.TotalMilliseconds - cpuLastTime;
-                    cpuLastTime = WatchedProcess.TotalProcessorTime.TotalMilliseconds;
-                    double cpuPercent = cpuTotalTime * 100 /  (Environment.ProcessorCount * cpuMeasureTimer.ElapsedMilliseconds);
-                    string ProcessAnswer = (WatchedProcess.Responding)?"Активен":"Неактивен";
+                    try
+                    {
+                        cpuTotalTime = WatchedProcess.TotalProcessorTime.TotalMilliseconds - cpuLastTime;
+                        cpuLastTime = WatchedProcess.TotalProcessorTime.TotalMilliseconds;
+                        cpuPercent = cpuTotalTime * 100 / (Environment.ProcessorCount * cpuMeasureTimer.ElapsedMilliseconds);
+                        ProcessAnswer = (WatchedProcess.Responding) ? "Активен" : "Неактивен";
+                    }
+                    catch
+                    {
+                        cpuTotalTime = 0;
+                        cpuPercent = 0;
+                        ProcessAnswer = "Неактивен";
+                    }
                     cpuMeasureTimer.Reset();
                     cpuMeasureTimer.Start();
+
                     Status($"Процесс уже запущен.",NotifyLevel.logUpdateStatus);
                     processInformationLabel.Text = $"Интерфейс: {ProcessAnswer}. ЦПУ: {cpuPercent:f2}% {cpuTotalTime:f2}мсек";
                     if (i < (int)numericUpDown1.Value) SendDiscordMessage($"Процесс {textBoxProcessName.Text} запущен.",NotifyLevel.logDiscord);

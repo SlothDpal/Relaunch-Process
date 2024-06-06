@@ -12,6 +12,7 @@ using Discord.Webhook;
 using System.Data;
 using static System.Net.Mime.MediaTypeNames;
 using RelaunchProcess;
+using System.Timers;
 
 
 namespace Process_Auto_Relaunch
@@ -34,6 +35,8 @@ namespace Process_Auto_Relaunch
         private Process WatchedProcess;
         private double cpuLastTime = 0;
         private Stopwatch cpuMeasureTimer;
+        private System.Timers.Timer waitResponceTimer;
+
         /// <summary>
         /// Процесс для наблюдения
         /// </summary>
@@ -262,6 +265,51 @@ namespace Process_Auto_Relaunch
             return false;
         }
 
+        private void ProcessCheckResponding(bool cpuResponding, double cpuPrecent)
+        {
+            if (cpuResponding || cpuPrecent > 0.01)
+            {
+                if (waitResponceTimer != null)
+                {
+                    StopTimerWaitingResponce();
+                }
+                return;
+            }
+
+            if (!TimerResponceRuning())
+            {
+                StartTimerWaitingResponce();
+            }
+        }
+
+        private bool TimerResponceRuning()
+        {
+            return waitResponceTimer != null /*&& waitResponceTimer.Enabled*/;
+        }
+
+        private void StartTimerWaitingResponce()
+        {
+            Debug.WriteLine("Запуск таймера ожидания процесса.");
+            waitResponceTimer = new System.Timers.Timer(5000);
+            waitResponceTimer.Elapsed += ProcessNotResponding;
+            waitResponceTimer.AutoReset = false;
+            waitResponceTimer.Enabled = true;
+        }
+
+        private void StopTimerWaitingResponce()
+        {
+            Debug.WriteLine("Остановка таймера ожидания процесса.");
+            waitResponceTimer.Dispose();
+            waitResponceTimer = null;
+        }
+
+        private void ProcessNotResponding(Object source, ElapsedEventArgs e)
+        {
+            Debug.WriteLine("Таймер ожидания ответа процесса вышел.");
+            Status($"Процесс {ProcessName} не отвечает. @everyone сделайте что-нибудь!", NotifyLevel.logDiscord);
+            Status($"Процесс {ProcessName} не отвечает.", NotifyLevel.logHistory);
+        }
+
         private void ProcessStart(string path, string args)
         {
             if (checkBoxCheckProcess.Checked)
@@ -297,6 +345,7 @@ namespace Process_Auto_Relaunch
                         cpuLastTime = WatchedProcess.TotalProcessorTime.TotalMilliseconds;
                         cpuPercent = cpuTotalTime * 100 / (Environment.ProcessorCount * cpuMeasureTimer.ElapsedMilliseconds);
                         ProcessAnswer = (WatchedProcess.Responding) ? "Активен" : "Неактивен";
+                        ProcessCheckResponding(WatchedProcess.Responding, cpuPercent);
                     }
                     catch
                     {

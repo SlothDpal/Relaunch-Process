@@ -34,6 +34,10 @@ namespace Process_Auto_Relaunch
         private Process WatchedProcess;
         private double cpuLastTime = 0;
         private Stopwatch cpuMeasureTimer;
+        /// <summary>
+        /// Процесс для наблюдения
+        /// </summary>
+        public string ProcessName { get { return textBoxProcessName.Text; } set { textBoxProcessName.Text = value; } }
 
         public Form1()
         {
@@ -54,9 +58,6 @@ namespace Process_Auto_Relaunch
         private void Form1_Load(object sender, EventArgs e)
         {
             LoadOldState();
-
-            //MessageBox.Show(Environment.UserDomainName);
-
             CheckProgramState();
         }
 
@@ -130,7 +131,7 @@ namespace Process_Auto_Relaunch
             if (!myBackgroundWorker.IsBusy)
             {
                 myBackgroundWorker.RunWorkerAsync();
-                Status($"Запускаем наблюдение...", NotifyLevel.logDiscord);
+                Status($"Запуск наблюдения за процессом {ProcessName}", NotifyLevel.logDiscord);
             }
         }
 
@@ -274,7 +275,7 @@ namespace Process_Auto_Relaunch
             WatchedProcess=Process.Start(path, args);
             cpuLastTime = 0;
             cpuMeasureTimer.Start();
-            Status("Процесс был запущен.", NotifyLevel.logAlways);
+            Status($"Процесс {ProcessName} был запущен.", NotifyLevel.logAlways);
         }
 
         private void BackgroundWorkerDoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
@@ -306,9 +307,9 @@ namespace Process_Auto_Relaunch
                     cpuMeasureTimer.Reset();
                     cpuMeasureTimer.Start();
 
-                    Status($"Процесс уже запущен.",NotifyLevel.logUpdateStatus);
+                    Status($"Процесс {ProcessName} уже запущен.",NotifyLevel.logUpdateStatus);
                     processInformationLabel.Text = $"Интерфейс: {ProcessAnswer}. ЦПУ: {cpuPercent:f2}% {cpuTotalTime:f2}мсек";
-                    if (i < (int)numericUpDown1.Value) SendDiscordMessage($"Процесс {textBoxProcessName.Text} запущен.",NotifyLevel.logDiscord);
+                    if (i < (int)numericUpDown1.Value) SendDiscordMessage($"Процесс {ProcessName} запущен.",NotifyLevel.logDiscord);
                     i = (int)numericUpDown1.Value;
                 }
                 else
@@ -316,15 +317,15 @@ namespace Process_Auto_Relaunch
                     processInformationLabel.Text = "";
                     if (radioButtonRestartTimer.Checked)
                     {
-                        if (i==(int)numericUpDown1.Value) Status($"Процесс {textBoxProcessName.Text} не найден. Запуск через {i} сек",NotifyLevel.logDiscord);
+                        if (i==(int)numericUpDown1.Value) Status($"Процесс {ProcessName} не найден. Запуск через {i} сек",NotifyLevel.logDiscord);
                         i--;
-                        Status($"Процесс {textBoxProcessName.Text} не найден. Запуск через {i}", NotifyLevel.logUpdateStatus);
+                        Status($"Процесс {ProcessName} не найден. Запуск через {i}", NotifyLevel.logUpdateStatus);
                     }
 
                     if (i <= 0 || radioButtonRestartNow.Checked)
                     {
                         i = (int)numericUpDown1.Value;
-                        Status($"Запускаем {textBoxProcessName.Text}", NotifyLevel.logUpdateStatus|NotifyLevel.logDiscord);
+                        Status($"Запускаем {ProcessName}", NotifyLevel.logUpdateStatus|NotifyLevel.logDiscord);
                         ProcessStart(Settings.Default.startProgramPath, textBoxArguments.Text);
                     }
                 }

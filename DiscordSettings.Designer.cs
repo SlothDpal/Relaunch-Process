@@ -195,6 +195,7 @@ namespace RelaunchProcess
             this.Name = "WebhookSettings";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Настройки webhook";
             this.Load += new System.EventHandler(this.WebhookSettings_FormLoad);
             this.groupBoxSettingsDiscord.ResumeLayout(false);

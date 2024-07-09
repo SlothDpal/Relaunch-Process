@@ -30,6 +30,7 @@ namespace Process_Auto_Relaunch
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.groupBoxActions = new System.Windows.Forms.GroupBox();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
@@ -48,7 +49,6 @@ namespace Process_Auto_Relaunch
             this.checkBoxSaveState = new System.Windows.Forms.CheckBox();
             this.radioButtonEnableWathing = new System.Windows.Forms.RadioButton();
             this.radioButtonDisableWathing = new System.Windows.Forms.RadioButton();
-            this.btnShowDiscordSettings = new System.Windows.Forms.Button();
             this.groupBoxStatus = new System.Windows.Forms.GroupBox();
             this.labelStatus = new System.Windows.Forms.Label();
             this.myBackgroundWorker = new System.ComponentModel.BackgroundWorker();
@@ -56,6 +56,11 @@ namespace Process_Auto_Relaunch
             this.richTextBoxHistory = new System.Windows.Forms.RichTextBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.processInformationLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.mainMenu = new System.Windows.Forms.MenuStrip();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.webhookSettingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.AboutProgram = new System.Windows.Forms.ToolStripMenuItem();
+            this.tipProgramStartPath = new System.Windows.Forms.ToolTip(this.components);
             this.groupBoxActions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.groupBoxProgramStart.SuspendLayout();
@@ -64,6 +69,7 @@ namespace Process_Auto_Relaunch
             this.groupBoxStatus.SuspendLayout();
             this.groupBoxHistory.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            this.mainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxActions
@@ -75,7 +81,7 @@ namespace Process_Auto_Relaunch
             this.groupBoxActions.Controls.Add(this.checkBoxCheckProcess);
             this.groupBoxActions.Controls.Add(this.radioButtonRestartTimer);
             this.groupBoxActions.Controls.Add(this.radioButtonRestartNow);
-            this.groupBoxActions.Location = new System.Drawing.Point(13, 79);
+            this.groupBoxActions.Location = new System.Drawing.Point(13, 109);
             this.groupBoxActions.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxActions.Name = "groupBoxActions";
             this.groupBoxActions.Padding = new System.Windows.Forms.Padding(4);
@@ -162,7 +168,7 @@ namespace Process_Auto_Relaunch
             // 
             // buttonSetProgramStart
             // 
-            this.buttonSetProgramStart.Location = new System.Drawing.Point(5, 23);
+            this.buttonSetProgramStart.Location = new System.Drawing.Point(7, 23);
             this.buttonSetProgramStart.Margin = new System.Windows.Forms.Padding(4);
             this.buttonSetProgramStart.Name = "buttonSetProgramStart";
             this.buttonSetProgramStart.Size = new System.Drawing.Size(89, 34);
@@ -179,11 +185,11 @@ namespace Process_Auto_Relaunch
             this.groupBoxProgramStart.Controls.Add(this.labelArguments);
             this.groupBoxProgramStart.Controls.Add(this.labelProgramStartPath);
             this.groupBoxProgramStart.Controls.Add(this.buttonSetProgramStart);
-            this.groupBoxProgramStart.Location = new System.Drawing.Point(13, 198);
+            this.groupBoxProgramStart.Location = new System.Drawing.Point(13, 228);
             this.groupBoxProgramStart.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxProgramStart.Name = "groupBoxProgramStart";
             this.groupBoxProgramStart.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBoxProgramStart.Size = new System.Drawing.Size(382, 139);
+            this.groupBoxProgramStart.Size = new System.Drawing.Size(382, 112);
             this.groupBoxProgramStart.TabIndex = 6;
             this.groupBoxProgramStart.TabStop = false;
             this.groupBoxProgramStart.Text = "Запуск программы";
@@ -191,7 +197,7 @@ namespace Process_Auto_Relaunch
             // textBoxArguments
             // 
             this.textBoxArguments.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::RelaunchProcess.Properties.Settings.Default, "arguments", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.textBoxArguments.Location = new System.Drawing.Point(7, 108);
+            this.textBoxArguments.Location = new System.Drawing.Point(7, 80);
             this.textBoxArguments.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxArguments.Name = "textBoxArguments";
             this.textBoxArguments.Size = new System.Drawing.Size(365, 22);
@@ -201,7 +207,7 @@ namespace Process_Auto_Relaunch
             // labelArguments
             // 
             this.labelArguments.AutoSize = true;
-            this.labelArguments.Location = new System.Drawing.Point(5, 89);
+            this.labelArguments.Location = new System.Drawing.Point(5, 61);
             this.labelArguments.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelArguments.Name = "labelArguments";
             this.labelArguments.Size = new System.Drawing.Size(193, 16);
@@ -212,7 +218,7 @@ namespace Process_Auto_Relaunch
             // 
             this.labelProgramStartPath.AutoSize = true;
             this.labelProgramStartPath.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::RelaunchProcess.Properties.Settings.Default, "startProgramPath", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.labelProgramStartPath.Location = new System.Drawing.Point(7, 62);
+            this.labelProgramStartPath.Location = new System.Drawing.Point(104, 32);
             this.labelProgramStartPath.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelProgramStartPath.Name = "labelProgramStartPath";
             this.labelProgramStartPath.Size = new System.Drawing.Size(0, 16);
@@ -224,7 +230,7 @@ namespace Process_Auto_Relaunch
             this.groupBoxProcessName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxProcessName.Controls.Add(this.textBoxProcessName);
-            this.groupBoxProcessName.Location = new System.Drawing.Point(13, 12);
+            this.groupBoxProcessName.Location = new System.Drawing.Point(13, 39);
             this.groupBoxProcessName.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxProcessName.Name = "groupBoxProcessName";
             this.groupBoxProcessName.Padding = new System.Windows.Forms.Padding(4);
@@ -252,13 +258,12 @@ namespace Process_Auto_Relaunch
             this.groupBoxEnabled.Controls.Add(this.checkBoxSaveState);
             this.groupBoxEnabled.Controls.Add(this.radioButtonEnableWathing);
             this.groupBoxEnabled.Controls.Add(this.radioButtonDisableWathing);
-            this.groupBoxEnabled.Controls.Add(this.btnShowDiscordSettings);
             this.groupBoxEnabled.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.groupBoxEnabled.Location = new System.Drawing.Point(13, 345);
+            this.groupBoxEnabled.Location = new System.Drawing.Point(13, 348);
             this.groupBoxEnabled.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxEnabled.Name = "groupBoxEnabled";
             this.groupBoxEnabled.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBoxEnabled.Size = new System.Drawing.Size(382, 89);
+            this.groupBoxEnabled.Size = new System.Drawing.Size(382, 76);
             this.groupBoxEnabled.TabIndex = 9;
             this.groupBoxEnabled.TabStop = false;
             this.groupBoxEnabled.Text = "Состояние";
@@ -306,24 +311,12 @@ namespace Process_Auto_Relaunch
             this.radioButtonDisableWathing.UseVisualStyleBackColor = true;
             this.radioButtonDisableWathing.CheckedChanged += new System.EventHandler(this.radioButtonDisableWathing_CheckedChanged);
             // 
-            // btnShowDiscordSettings
-            // 
-            this.btnShowDiscordSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnShowDiscordSettings.Location = new System.Drawing.Point(282, 16);
-            this.btnShowDiscordSettings.Margin = new System.Windows.Forms.Padding(4);
-            this.btnShowDiscordSettings.Name = "btnShowDiscordSettings";
-            this.btnShowDiscordSettings.Size = new System.Drawing.Size(89, 34);
-            this.btnShowDiscordSettings.TabIndex = 1;
-            this.btnShowDiscordSettings.Text = "Webhook";
-            this.btnShowDiscordSettings.UseVisualStyleBackColor = true;
-            this.btnShowDiscordSettings.Click += new System.EventHandler(this.btnShowDiscordSettings_Click);
-            // 
             // groupBoxStatus
             // 
             this.groupBoxStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxStatus.Controls.Add(this.labelStatus);
-            this.groupBoxStatus.Location = new System.Drawing.Point(13, 442);
+            this.groupBoxStatus.Location = new System.Drawing.Point(13, 432);
             this.groupBoxStatus.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxStatus.Name = "groupBoxStatus";
             this.groupBoxStatus.Padding = new System.Windows.Forms.Padding(4);
@@ -349,13 +342,12 @@ namespace Process_Auto_Relaunch
             // 
             // groupBoxHistory
             // 
-            this.groupBoxHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.groupBoxHistory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxHistory.Controls.Add(this.richTextBoxHistory);
-            this.groupBoxHistory.Location = new System.Drawing.Point(13, 514);
+            this.groupBoxHistory.Location = new System.Drawing.Point(13, 504);
             this.groupBoxHistory.Name = "groupBoxHistory";
-            this.groupBoxHistory.Size = new System.Drawing.Size(382, 148);
+            this.groupBoxHistory.Size = new System.Drawing.Size(382, 156);
             this.groupBoxHistory.TabIndex = 11;
             this.groupBoxHistory.TabStop = false;
             this.groupBoxHistory.Text = "История запусков";
@@ -367,17 +359,20 @@ namespace Process_Auto_Relaunch
             this.richTextBoxHistory.Location = new System.Drawing.Point(7, 21);
             this.richTextBoxHistory.Name = "richTextBoxHistory";
             this.richTextBoxHistory.ReadOnly = true;
-            this.richTextBoxHistory.Size = new System.Drawing.Size(369, 120);
+            this.richTextBoxHistory.Size = new System.Drawing.Size(369, 129);
             this.richTextBoxHistory.TabIndex = 0;
             this.richTextBoxHistory.Text = "";
             // 
             // statusStrip1
             // 
+            this.statusStrip1.AutoSize = false;
+            this.statusStrip1.BackColor = System.Drawing.SystemColors.Control;
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.processInformationLabel});
             this.statusStrip1.Location = new System.Drawing.Point(0, 665);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(420, 22);
+            this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 12;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -387,12 +382,48 @@ namespace Process_Auto_Relaunch
             this.processInformationLabel.Size = new System.Drawing.Size(16, 17);
             this.processInformationLabel.Text = "   ";
             // 
+            // mainMenu
+            // 
+            this.mainMenu.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.mainMenu.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.settingsToolStripMenuItem,
+            this.AboutProgram});
+            this.mainMenu.Location = new System.Drawing.Point(0, 0);
+            this.mainMenu.Name = "mainMenu";
+            this.mainMenu.Size = new System.Drawing.Size(420, 24);
+            this.mainMenu.TabIndex = 13;
+            this.mainMenu.Text = "menuStrip1";
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.webhookSettingsMenuItem});
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(90, 20);
+            this.settingsToolStripMenuItem.Text = "Настройки";
+            // 
+            // webhookSettingsMenuItem
+            // 
+            this.webhookSettingsMenuItem.Name = "webhookSettingsMenuItem";
+            this.webhookSettingsMenuItem.Size = new System.Drawing.Size(120, 22);
+            this.webhookSettingsMenuItem.Text = "Вебхук";
+            this.webhookSettingsMenuItem.Click += new System.EventHandler(this.webhookDiscordToolStripMenuItem_Click);
+            // 
+            // AboutProgram
+            // 
+            this.AboutProgram.Name = "AboutProgram";
+            this.AboutProgram.Size = new System.Drawing.Size(104, 20);
+            this.AboutProgram.Text = "О программе";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(420, 687);
             this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.mainMenu);
             this.Controls.Add(this.groupBoxHistory);
             this.Controls.Add(this.groupBoxStatus);
             this.Controls.Add(this.groupBoxEnabled);
@@ -400,10 +431,11 @@ namespace Process_Auto_Relaunch
             this.Controls.Add(this.groupBoxProgramStart);
             this.Controls.Add(this.groupBoxActions);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.mainMenu;
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(436, 726);
+            this.MinimumSize = new System.Drawing.Size(436, 436);
             this.Name = "Form1";
             this.Text = "Relaunch Process";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
@@ -422,6 +454,8 @@ namespace Process_Auto_Relaunch
             this.groupBoxHistory.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.mainMenu.ResumeLayout(false);
+            this.mainMenu.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -451,8 +485,12 @@ namespace Process_Auto_Relaunch
         private NumericUpDown numericUpDown1;
         private GroupBox groupBoxHistory;
         private RichTextBox richTextBoxHistory;
-        private Button btnShowDiscordSettings;
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel processInformationLabel;
+        private MenuStrip mainMenu;
+        private ToolStripMenuItem settingsToolStripMenuItem;
+        private ToolStripMenuItem webhookSettingsMenuItem;
+        private ToolStripMenuItem AboutProgram;
+        private ToolTip tipProgramStartPath;
     }
 }

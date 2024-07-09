@@ -49,6 +49,7 @@ namespace Process_Auto_Relaunch
             this.updateLogDelegate += this.SendDiscordMessage;
             this.updateLogDelegate += this.HistoryLog;
             myBackgroundWorker.WorkerSupportsCancellation = true;
+            tipProgramStartPath.SetToolTip(this.labelProgramStartPath, Settings.Default.startProgramPath);
             dwhHook = new DiscordWebhook();
             cpuMeasureTimer = new Stopwatch();
         }
@@ -206,11 +207,12 @@ namespace Process_Auto_Relaunch
             groupBoxProcessName.Enabled = !watching;
             groupBoxProgramStart.Enabled = !watching;
             groupBoxActions.Enabled = !watching;
-            btnShowDiscordSettings.Enabled = !watching; //отключаем кнопку настроек дискорда
-
-            Settings.Default.enableWatching = watching;
-
+            // btnShowDiscordSettings.Enabled = !watching; //отключаем кнопку настроек дискорда
+            // webhookDiscordToolStripMenuItem.Enabled = !watching;
+            // отключаем меню настроек
+            settingsToolStripMenuItem.Enabled = !watching;
             
+            Settings.Default.enableWatching = watching;
         }
 
         /// <summary>
@@ -234,6 +236,7 @@ namespace Process_Auto_Relaunch
             textBoxProcessName.Text = textBoxProcessName.Text.Remove(textBoxProcessName.Text.Length-4);
             Settings.Default.startProgramPath = openFile.FileName;
             Settings.Default.Save();
+            tipProgramStartPath.SetToolTip(this.labelProgramStartPath, Settings.Default.startProgramPath);
             openFile.Dispose();
         }
 
@@ -408,7 +411,7 @@ namespace Process_Auto_Relaunch
             }
         }
 
-        private void btnShowDiscordSettings_Click(object sender, EventArgs e)
+        private void webhookDiscordToolStripMenuItem_Click(object sender, EventArgs e)
         {
             WebhookSettings discordSettings;
             discordSettings = new WebhookSettings();

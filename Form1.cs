@@ -315,20 +315,16 @@ namespace Process_Auto_Relaunch
 
         private void ProcessStart(string path, string args)
         {
-            if (checkBoxCheckProcess.Checked)
+            if (ProcessByNameIsRuning(path))
             {
-                if (ProcessByNameIsRuning(path))
-                {
-                    // Процесс уже запущен
                     return;
-                }
             }
 
             // Процесс не запущен
             WatchedProcess = Process.Start(path, args);
             cpuLastTime = 0;
             cpuMeasureTimer.Start();
-            Status($"Процесс {ProcessName} был запущен.", NotifyLevel.logAlways);
+            Status($"Процесс {ProcessName} запущен.", NotifyLevel.logAlways);
         }
 
         private void BackgroundWorkerDoWork(object sender, System.ComponentModel.DoWorkEventArgs e)

@@ -35,7 +35,6 @@ namespace Process_Auto_Relaunch
             this.groupBoxActions = new System.Windows.Forms.GroupBox();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
-            this.checkBoxCheckProcess = new System.Windows.Forms.CheckBox();
             this.radioButtonRestartTimer = new System.Windows.Forms.RadioButton();
             this.radioButtonRestartNow = new System.Windows.Forms.RadioButton();
             this.buttonSetProgramStart = new System.Windows.Forms.Button();
@@ -78,7 +77,6 @@ namespace Process_Auto_Relaunch
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxActions.Controls.Add(this.numericUpDown1);
             this.groupBoxActions.Controls.Add(this.label1);
-            this.groupBoxActions.Controls.Add(this.checkBoxCheckProcess);
             this.groupBoxActions.Controls.Add(this.radioButtonRestartTimer);
             this.groupBoxActions.Controls.Add(this.radioButtonRestartNow);
             this.groupBoxActions.Location = new System.Drawing.Point(13, 109);
@@ -125,20 +123,6 @@ namespace Process_Auto_Relaunch
             this.label1.Size = new System.Drawing.Size(53, 16);
             this.label1.TabIndex = 4;
             this.label1.Text = "секунд";
-            // 
-            // checkBoxCheckProcess
-            // 
-            this.checkBoxCheckProcess.AutoSize = true;
-            this.checkBoxCheckProcess.Checked = global::RelaunchProcess.Properties.Settings.Default.checkBeforeStart;
-            this.checkBoxCheckProcess.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxCheckProcess.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::RelaunchProcess.Properties.Settings.Default, "checkBeforeStart", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.checkBoxCheckProcess.Location = new System.Drawing.Point(11, 78);
-            this.checkBoxCheckProcess.Margin = new System.Windows.Forms.Padding(4);
-            this.checkBoxCheckProcess.Name = "checkBoxCheckProcess";
-            this.checkBoxCheckProcess.Size = new System.Drawing.Size(265, 20);
-            this.checkBoxCheckProcess.TabIndex = 2;
-            this.checkBoxCheckProcess.Text = "Проверять наличие перед запуском";
-            this.checkBoxCheckProcess.UseVisualStyleBackColor = true;
             // 
             // radioButtonRestartTimer
             // 
@@ -466,7 +450,6 @@ namespace Process_Auto_Relaunch
 
         private GroupBox groupBoxActions;
         private Label label1;
-        private CheckBox checkBoxCheckProcess;
         private RadioButton radioButtonRestartTimer;
         private RadioButton radioButtonRestartNow;
         private Button buttonSetProgramStart;

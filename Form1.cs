@@ -94,7 +94,7 @@ namespace Process_Auto_Relaunch
             if (myBackgroundWorker.WorkerSupportsCancellation && myBackgroundWorker.IsBusy)
             {
                 myBackgroundWorker.CancelAsync();
-                UpdateStatus("Отменяем...",NotifyLevel.logUpdateStatus);
+                UpdateStatus("Отменяем...", NotifyLevel.logUpdateStatus);
             }
         }
 
@@ -144,7 +144,7 @@ namespace Process_Auto_Relaunch
         /// </summary>
         /// <param name="text">Текст для отображения/отправки </param>
         /// <param name="level">Флаги для назначения отправки</param>
-        public void UpdateStatus( string text, NotifyLevel level )
+        public void UpdateStatus(string text, NotifyLevel level)
         {
             if (!level.HasFlag(NotifyLevel.logAlways) && !level.HasFlag(NotifyLevel.logUpdateStatus)) return;
             labelStatus.Text = text;
@@ -155,7 +155,7 @@ namespace Process_Auto_Relaunch
         /// </summary>
         /// <param name="text">Текст для отображения/отправки </param>
         /// <param name="level">Флаги для назначения отправки</param>
-        private void HistoryLog( string text, NotifyLevel level )
+        private void HistoryLog(string text, NotifyLevel level)
         {
             if (!level.HasFlag(NotifyLevel.logAlways) && !level.HasFlag(NotifyLevel.logHistory)) return;
             richTextBoxHistory.Text += DateTime.Now.ToString() + ": " + text + "\n";
@@ -166,7 +166,7 @@ namespace Process_Auto_Relaunch
         /// </summary>
         /// <param name="text">Текст для отображения/отправки </param>
         /// <param name="level">Флаги для назначения отправки</param>
-        public void SendDiscordMessage( string text, NotifyLevel level )
+        public void SendDiscordMessage(string text, NotifyLevel level)
         {
             if (!level.HasFlag(NotifyLevel.logAlways) && !level.HasFlag(NotifyLevel.logDiscord)) return;
             if (Settings.Default.dwhEnabled)
@@ -181,7 +181,7 @@ namespace Process_Auto_Relaunch
                 }
                 catch (Exception ex)
                 {
-                    Status($"Ошибка отправки в дискорд.",NotifyLevel.logHistory);
+                    Status($"Ошибка отправки в дискорд.", NotifyLevel.logHistory);
                     Debug.WriteLine($"Discord messaging error: {ex.Message}");
                     //Settings.Default.dwhEnabled = false;
                     //Settings.Default.Save();
@@ -232,8 +232,8 @@ namespace Process_Auto_Relaunch
             }
 
             int lastSlash = openFile.FileName.LastIndexOf("\\");
-            textBoxProcessName.Text = openFile.FileName.Substring(lastSlash+1);
-            textBoxProcessName.Text = textBoxProcessName.Text.Remove(textBoxProcessName.Text.Length-4);
+            textBoxProcessName.Text = openFile.FileName.Substring(lastSlash + 1);
+            textBoxProcessName.Text = textBoxProcessName.Text.Remove(textBoxProcessName.Text.Length - 4);
             Settings.Default.startProgramPath = openFile.FileName;
             Settings.Default.Save();
             tipProgramStartPath.SetToolTip(this.labelProgramStartPath, Settings.Default.startProgramPath);
@@ -319,11 +319,13 @@ namespace Process_Auto_Relaunch
             {
                 if (ProcessByNameIsRuning(path))
                 {
+                    // Процесс уже запущен
                     return;
                 }
             }
 
-            WatchedProcess=Process.Start(path, args);
+            // Процесс не запущен
+            WatchedProcess = Process.Start(path, args);
             cpuLastTime = 0;
             cpuMeasureTimer.Start();
             Status($"Процесс {ProcessName} был запущен.", NotifyLevel.logAlways);
@@ -359,9 +361,9 @@ namespace Process_Auto_Relaunch
                     cpuMeasureTimer.Reset();
                     cpuMeasureTimer.Start();
 
-                    Status($"Процесс {ProcessName} уже запущен.",NotifyLevel.logUpdateStatus);
+                    Status($"Процесс {ProcessName} уже запущен.", NotifyLevel.logUpdateStatus);
                     processInformationLabel.Text = $"Интерфейс: {ProcessAnswer}. ЦПУ: {cpuPercent:f2}% {cpuTotalTime:f2}мсек";
-                    if (i < (int)numericUpDown1.Value) SendDiscordMessage($"Процесс {ProcessName} запущен.",NotifyLevel.logDiscord);
+                    if (i < (int)numericUpDown1.Value) SendDiscordMessage($"Процесс {ProcessName} запущен.", NotifyLevel.logDiscord);
                     i = (int)numericUpDown1.Value;
                 }
                 else
@@ -369,7 +371,7 @@ namespace Process_Auto_Relaunch
                     processInformationLabel.Text = "";
                     if (radioButtonRestartTimer.Checked)
                     {
-                        if (i==(int)numericUpDown1.Value) Status($"Процесс {ProcessName} не найден. Запуск через {i} сек",NotifyLevel.logDiscord);
+                        if (i == (int)numericUpDown1.Value) Status($"Процесс {ProcessName} не найден. Запуск через {i} сек", NotifyLevel.logDiscord);
                         i--;
                         Status($"Процесс {ProcessName} не найден. Запуск через {i}", NotifyLevel.logUpdateStatus);
                     }
@@ -377,7 +379,7 @@ namespace Process_Auto_Relaunch
                     if (i <= 0 || radioButtonRestartNow.Checked)
                     {
                         i = (int)numericUpDown1.Value;
-                        Status($"Запускаем {ProcessName}", NotifyLevel.logUpdateStatus|NotifyLevel.logDiscord);
+                        Status($"Запускаем {ProcessName}", NotifyLevel.logUpdateStatus | NotifyLevel.logDiscord);
                         ProcessStart(Settings.Default.startProgramPath, textBoxArguments.Text);
                     }
                 }
@@ -396,7 +398,7 @@ namespace Process_Auto_Relaunch
         {
             if (e.Cancelled)
             {
-                Status("Наблюдение отменено.",NotifyLevel.logUpdateStatus|NotifyLevel.logDiscord);
+                Status("Наблюдение отменено.", NotifyLevel.logUpdateStatus | NotifyLevel.logDiscord);
             }
             else if (e.Error != null)
             {
@@ -407,7 +409,7 @@ namespace Process_Auto_Relaunch
             }
             else
             {
-                Status("Наблюдение остановлено.", NotifyLevel.logUpdateStatus|NotifyLevel.logDiscord);
+                Status("Наблюдение остановлено.", NotifyLevel.logUpdateStatus | NotifyLevel.logDiscord);
             }
         }
 

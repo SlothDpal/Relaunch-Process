@@ -74,7 +74,7 @@ namespace Process_Auto_Relaunch
             {
                 radioButtonEnableWathing.Checked = Settings.Default.enableWatching;
             }
-            
+
         }
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace Process_Auto_Relaunch
             // webhookDiscordToolStripMenuItem.Enabled = !watching;
             // отключаем меню настроек
             settingsToolStripMenuItem.Enabled = !watching;
-            
+
             Settings.Default.enableWatching = watching;
         }
 
@@ -268,37 +268,58 @@ namespace Process_Auto_Relaunch
             return false;
         }
 
+        /// <summary>
+        /// Обнаружение зависшего процесса по нагрузке
+        /// </summary>
+        /// <param name="cpuResponding"></param>
+        /// <param name="cpuPrecent"></param>
         private void ProcessCheckResponding(bool cpuResponding, double cpuPrecent)
         {
             if (cpuResponding || cpuPrecent > 0.01)
             {
-                if (waitResponceTimer != null)
+                // Процесс отвечает
+                // Если таймер ожидания запущен - отключаем.
+                if (TimerResponceRuning())
                 {
                     StopTimerWaitingResponce();
                 }
                 return;
             }
 
+            // Процесс не отвечает
+            // Если таймер ожидания не запущен - запускаем
             if (!TimerResponceRuning())
             {
-                StartTimerWaitingResponce();
+                StartTimerWaitingResponce(5000, ProcessNotResponding);
             }
         }
 
+        /// <summary>
+        /// Проверяет запущен ли таймер ожидания процесса
+        /// </summary>
+        /// <returns>True, если запущен</returns>
         private bool TimerResponceRuning()
         {
             return waitResponceTimer != null /*&& waitResponceTimer.Enabled*/;
         }
 
-        private void StartTimerWaitingResponce()
+        /// <summary>
+        /// Метод запуска таймера для ожидания процесса
+        /// </summary>
+        /// <param name="interval">Интервал таймера</param>
+        /// <param name="timerElapsed">Метод, вызываемый после окончания таймера</param>
+        private void StartTimerWaitingResponce(double interval, ElapsedEventHandler timerElapsed)
         {
-            Debug.WriteLine("Запуск таймера ожидания процесса.");
-            waitResponceTimer = new System.Timers.Timer(5000);
-            waitResponceTimer.Elapsed += ProcessNotResponding;
+            Debug.WriteLine($"Запуск таймера {interval} ms.");
+            waitResponceTimer = new System.Timers.Timer(interval);
+            waitResponceTimer.Elapsed += timerElapsed;
             waitResponceTimer.AutoReset = false;
             waitResponceTimer.Enabled = true;
         }
 
+        /// <summary>
+        /// Остановка таймера ожидания процесса
+        /// </summary>
         private void StopTimerWaitingResponce()
         {
             Debug.WriteLine("Остановка таймера ожидания процесса.");
@@ -333,7 +354,7 @@ namespace Process_Auto_Relaunch
         {
             if (ProcessByNameIsRuning(path))
             {
-                    return;
+                return;
             }
 
             // Процесс не запущен

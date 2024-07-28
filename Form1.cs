@@ -327,6 +327,31 @@ namespace Process_Auto_Relaunch
             Status($"Процесс {ProcessName} запущен.", NotifyLevel.logAlways);
         }
 
+        /// <summary>
+        /// Метод принудительного завершения процесса
+        /// </summary>
+        /// <param name="process"></param>
+        private void ProcessKill(Process process)
+        {
+            if (process == null || process.HasExited)
+            {
+                return;
+            }
+
+            try
+            {
+                Status($"Попытка завершения процесса {process.ProcessName}", NotifyLevel.logHistory | NotifyLevel.logDiscord);
+                process.Kill();
+            }
+            catch (Exception ex)
+            {
+                Status(ex.Message, NotifyLevel.logHistory | NotifyLevel.logDiscord);
+                return;
+            }
+
+            Status($"Процесс был успешно завершён.", NotifyLevel.logHistory | NotifyLevel.logDiscord);
+        }
+
         private void BackgroundWorkerDoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;

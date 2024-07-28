@@ -45,6 +45,7 @@ namespace Process_Auto_Relaunch
             this.groupBoxProcessName = new System.Windows.Forms.GroupBox();
             this.textBoxProcessName = new System.Windows.Forms.TextBox();
             this.groupBoxEnabled = new System.Windows.Forms.GroupBox();
+            this.checkBoxCloseFreezeProcess = new System.Windows.Forms.CheckBox();
             this.checkBoxSaveState = new System.Windows.Forms.CheckBox();
             this.radioButtonEnableWathing = new System.Windows.Forms.RadioButton();
             this.radioButtonDisableWathing = new System.Windows.Forms.RadioButton();
@@ -83,7 +84,7 @@ namespace Process_Auto_Relaunch
             this.groupBoxActions.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxActions.Name = "groupBoxActions";
             this.groupBoxActions.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBoxActions.Size = new System.Drawing.Size(382, 111);
+            this.groupBoxActions.Size = new System.Drawing.Size(382, 84);
             this.groupBoxActions.TabIndex = 0;
             this.groupBoxActions.TabStop = false;
             this.groupBoxActions.Text = "Действие после отсутствия процесса";
@@ -169,7 +170,7 @@ namespace Process_Auto_Relaunch
             this.groupBoxProgramStart.Controls.Add(this.labelArguments);
             this.groupBoxProgramStart.Controls.Add(this.labelProgramStartPath);
             this.groupBoxProgramStart.Controls.Add(this.buttonSetProgramStart);
-            this.groupBoxProgramStart.Location = new System.Drawing.Point(13, 228);
+            this.groupBoxProgramStart.Location = new System.Drawing.Point(13, 201);
             this.groupBoxProgramStart.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxProgramStart.Name = "groupBoxProgramStart";
             this.groupBoxProgramStart.Padding = new System.Windows.Forms.Padding(4);
@@ -239,18 +240,34 @@ namespace Process_Auto_Relaunch
             // 
             this.groupBoxEnabled.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBoxEnabled.Controls.Add(this.checkBoxCloseFreezeProcess);
             this.groupBoxEnabled.Controls.Add(this.checkBoxSaveState);
             this.groupBoxEnabled.Controls.Add(this.radioButtonEnableWathing);
             this.groupBoxEnabled.Controls.Add(this.radioButtonDisableWathing);
             this.groupBoxEnabled.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.groupBoxEnabled.Location = new System.Drawing.Point(13, 348);
+            this.groupBoxEnabled.Location = new System.Drawing.Point(13, 321);
             this.groupBoxEnabled.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxEnabled.Name = "groupBoxEnabled";
             this.groupBoxEnabled.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBoxEnabled.Size = new System.Drawing.Size(382, 76);
+            this.groupBoxEnabled.Size = new System.Drawing.Size(382, 103);
             this.groupBoxEnabled.TabIndex = 9;
             this.groupBoxEnabled.TabStop = false;
             this.groupBoxEnabled.Text = "Состояние";
+            // 
+            // checkBoxCloseFreezeProcess
+            // 
+            this.checkBoxCloseFreezeProcess.AutoSize = true;
+            this.checkBoxCloseFreezeProcess.Checked = global::RelaunchProcess.Properties.Settings.Default.closeFreezeProcess;
+            this.checkBoxCloseFreezeProcess.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxCloseFreezeProcess.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::RelaunchProcess.Properties.Settings.Default, "closeFreezeProcess", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.checkBoxCloseFreezeProcess.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.checkBoxCloseFreezeProcess.Location = new System.Drawing.Point(20, 75);
+            this.checkBoxCloseFreezeProcess.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBoxCloseFreezeProcess.Name = "checkBoxCloseFreezeProcess";
+            this.checkBoxCloseFreezeProcess.Size = new System.Drawing.Size(221, 20);
+            this.checkBoxCloseFreezeProcess.TabIndex = 3;
+            this.checkBoxCloseFreezeProcess.Text = "Закрывать зависший процесс";
+            this.checkBoxCloseFreezeProcess.UseVisualStyleBackColor = true;
             // 
             // checkBoxSaveState
             // 
@@ -476,5 +493,6 @@ namespace Process_Auto_Relaunch
         private ToolStripMenuItem webhookSettingsMenuItem;
         private ToolStripMenuItem AboutProgram;
         private ToolTip tipProgramStartPath;
+        private CheckBox checkBoxCloseFreezeProcess;
     }
 }

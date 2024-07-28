@@ -306,11 +306,27 @@ namespace Process_Auto_Relaunch
             waitResponceTimer = null;
         }
 
+        /// <summary>
+        /// Метод события для таймера если процесс не отвечает
+        /// </summary>
         private void ProcessNotResponding(Object source, ElapsedEventArgs e)
         {
             Debug.WriteLine("Таймер ожидания ответа процесса вышел.");
-            Status($"Процесс {ProcessName} не отвечает. @everyone сделайте что-нибудь!", NotifyLevel.logDiscord);
-            Status($"Процесс {ProcessName} не отвечает.", NotifyLevel.logHistory);
+            Status($"Процесс {ProcessName} не отвечает уже какое-то время, возможно завис!", NotifyLevel.logHistory | NotifyLevel.logDiscord);
+
+            // Если процесс не завершаем, тогда только информируем
+            if (!checkBoxCloseFreezeProcess.Checked)
+            {
+                Status("@everyone Завершение процесса отключено. Сделайте что-нибудь!", NotifyLevel.logHistory | NotifyLevel.logDiscord);
+                return;
+            }
+
+            // Пытаемся самостоятельно завершить процесс
+            // ! Обнаружение зависшего процесса может быть некорректным !
+            if (ProcessByNameIsRuning(textBoxProcessName.Text))
+            {
+                ProcessKill(WatchedProcess);
+            }
         }
 
         private void ProcessStart(string path, string args)

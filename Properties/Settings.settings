@@ -38,5 +38,8 @@
     <Setting Name="dwhAvatarURL" Type="System.String" Scope="User">
       <Value Profile="(Default)">https://distribution.faceit-cdn.net/images/7240adfa-6bda-43a0-abd0-8c599f176686.jpeg</Value>
     </Setting>
+    <Setting Name="closeFreezeProcess" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

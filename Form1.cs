@@ -13,6 +13,8 @@ using System.Data;
 using static System.Net.Mime.MediaTypeNames;
 using RelaunchProcess;
 using System.Timers;
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
 
 namespace Process_Auto_Relaunch
@@ -477,6 +479,13 @@ namespace Process_Auto_Relaunch
             discordSettings = new WebhookSettings();
             discordSettings.ShowDialog(this);
             discordSettings.Dispose();
+        }
+
+        private void AboutProgram_Click(object sender, EventArgs e)
+        {
+            AboutBox aboutBox = new AboutBox();
+            aboutBox.ShowDialog(this);
+            aboutBox.Dispose();
         }
     }
 }

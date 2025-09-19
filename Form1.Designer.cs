@@ -407,7 +407,7 @@ namespace Process_Auto_Relaunch
             // webhookSettingsMenuItem
             // 
             this.webhookSettingsMenuItem.Name = "webhookSettingsMenuItem";
-            this.webhookSettingsMenuItem.Size = new System.Drawing.Size(120, 22);
+            this.webhookSettingsMenuItem.Size = new System.Drawing.Size(180, 22);
             this.webhookSettingsMenuItem.Text = "Вебхук";
             this.webhookSettingsMenuItem.Click += new System.EventHandler(this.webhookDiscordToolStripMenuItem_Click);
             // 
@@ -416,6 +416,7 @@ namespace Process_Auto_Relaunch
             this.AboutProgram.Name = "AboutProgram";
             this.AboutProgram.Size = new System.Drawing.Size(104, 20);
             this.AboutProgram.Text = "О программе";
+            this.AboutProgram.Click += new System.EventHandler(this.AboutProgram_Click);
             // 
             // Form1
             // 

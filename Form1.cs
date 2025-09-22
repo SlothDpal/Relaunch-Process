@@ -15,7 +15,7 @@ using RelaunchProcess;
 using System.Timers;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
-
+using System.Configuration;
 
 namespace Process_Auto_Relaunch
 {
@@ -47,6 +47,24 @@ namespace Process_Auto_Relaunch
         public Form1()
         {
             InitializeComponent();
+            if (Settings.Default.upgradeSettings)
+            {
+                Debug.WriteLine("Обновление настроек.");
+                try
+                {
+                    Settings.Default.Upgrade();
+                }
+                catch (ConfigurationErrorsException ex)
+                {
+                    Debug.WriteLine($"Ошибка обновления настроек: {ex.Message}");
+                    Settings.Default.Reset();
+                }
+                finally
+                {
+                    Settings.Default.upgradeSettings = false;
+                    Settings.Default.Save();
+                }
+            }
             this.updateLogDelegate = this.UpdateStatus;
             this.updateLogDelegate += this.SendDiscordMessage;
             this.updateLogDelegate += this.HistoryLog;

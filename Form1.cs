@@ -267,6 +267,7 @@ namespace Process_Auto_Relaunch
         /// <param name="e"></param>
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            dwhHook.CancelProcessing();
             Settings.Default.Save();
             Status("Наблюдение отменено - приложение закрыто.", NotifyLevel.logAlways);
         }

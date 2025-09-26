@@ -32,7 +32,7 @@ namespace Process_Auto_Relaunch
         }
         private delegate void UpdateLogDelegate(string text, NotifyLevel level = NotifyLevel.logUpdateStatus);
         private readonly UpdateLogDelegate updateLogDelegate;
-        private DiscordWebhook dwhHook;
+        public DiscordWebhook dwhHook;
         private DiscordMessage dwhMessage;
         private Process WatchedProcess;
         private double cpuLastTime = 0;
@@ -268,8 +268,8 @@ namespace Process_Auto_Relaunch
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             dwhHook.CancelProcessing();
-            Settings.Default.Save();
             Status("Наблюдение отменено - приложение закрыто.", NotifyLevel.logAlways);
+            Settings.Default.Save();
         }
 
         private bool ProcessByNameIsRuning(string name)
@@ -495,7 +495,7 @@ namespace Process_Auto_Relaunch
         private void webhookDiscordToolStripMenuItem_Click(object sender, EventArgs e)
         {
             WebhookSettings discordSettings;
-            discordSettings = new WebhookSettings();
+            discordSettings = new WebhookSettings(this);
             discordSettings.ShowDialog(this);
             discordSettings.Dispose();
         }

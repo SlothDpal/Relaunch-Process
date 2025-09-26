@@ -9,15 +9,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Process_Auto_Relaunch;
 using RelaunchProcess.Properties;
 
 namespace RelaunchProcess
 {
     public partial class WebhookSettings : Form
     {
-        public WebhookSettings()
+        private Form1 parent;
+        
+        public WebhookSettings(Form1 _parent)
         {
             InitializeComponent();
+            parent = _parent;
             RestoreSettings();
         }
 
@@ -63,6 +67,10 @@ namespace RelaunchProcess
                 if (String.IsNullOrEmpty(textDwhURL.Text))
                 {
                     chbxDiscordEnabled.Checked = false;
+                }
+                if (!chbxDiscordEnabled.Checked)
+                {
+                    parent.dwhHook.CancelProcessing();
                 }
                 SaveSettings();
                 DialogResult = DialogResult.OK;

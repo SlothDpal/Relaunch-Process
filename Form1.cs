@@ -15,7 +15,7 @@ using RelaunchProcess;
 using System.Timers;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
-
+using System.Configuration;
 
 namespace Process_Auto_Relaunch
 {
@@ -32,7 +32,7 @@ namespace Process_Auto_Relaunch
         }
         private delegate void UpdateLogDelegate(string text, NotifyLevel level = NotifyLevel.logUpdateStatus);
         private readonly UpdateLogDelegate updateLogDelegate;
-        private DiscordWebhook dwhHook;
+        public DiscordWebhook dwhHook;
         private DiscordMessage dwhMessage;
         private Process WatchedProcess;
         private double cpuLastTime = 0;
@@ -47,6 +47,24 @@ namespace Process_Auto_Relaunch
         public Form1()
         {
             InitializeComponent();
+            if (Settings.Default.upgradeSettings)
+            {
+                Debug.WriteLine("Обновление настроек.");
+                try
+                {
+                    Settings.Default.Upgrade();
+                }
+                catch (ConfigurationErrorsException ex)
+                {
+                    Debug.WriteLine($"Ошибка обновления настроек: {ex.Message}");
+                    Settings.Default.Reset();
+                }
+                finally
+                {
+                    Settings.Default.upgradeSettings = false;
+                    Settings.Default.Save();
+                }
+            }
             this.updateLogDelegate = this.UpdateStatus;
             this.updateLogDelegate += this.SendDiscordMessage;
             this.updateLogDelegate += this.HistoryLog;
@@ -249,8 +267,9 @@ namespace Process_Auto_Relaunch
         /// <param name="e"></param>
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Settings.Default.Save();
+            dwhHook.CancelProcessing();
             Status("Наблюдение отменено - приложение закрыто.", NotifyLevel.logAlways);
+            Settings.Default.Save();
         }
 
         private bool ProcessByNameIsRuning(string name)
@@ -476,7 +495,7 @@ namespace Process_Auto_Relaunch
         private void webhookDiscordToolStripMenuItem_Click(object sender, EventArgs e)
         {
             WebhookSettings discordSettings;
-            discordSettings = new WebhookSettings();
+            discordSettings = new WebhookSettings(this);
             discordSettings.ShowDialog(this);
             discordSettings.Dispose();
         }

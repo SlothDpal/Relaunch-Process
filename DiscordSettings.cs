@@ -1,23 +1,37 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Printing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using Process_Auto_Relaunch;
 using RelaunchProcess.Properties;
+using System;
+using System.Windows.Forms;
 
 namespace RelaunchProcess
 {
     public partial class WebhookSettings : Form
     {
         private MainWindow parent;
-        
+
+        private const int dwhBotNameMaxLength = 32;
+
+        // ссылка должна быть валидной, если она не пустая и имеет правильный формат URL
+        private bool LinkIsValid(string url)
+        {
+            return Uri.TryCreate(url.Trim(), UriKind.Absolute, out var uri) &&
+                   (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps) &&
+                   !string.IsNullOrWhiteSpace(uri.Host);
+        }
+
+        // ссылка должна быть валидной, если она пустая или имеет правильный формат URL
+        private bool LinkIsValidOrNull(string url)
+        {
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                return true;
+            }
+
+            return Uri.TryCreate(url.Trim(), UriKind.Absolute, out var uri) &&
+                   (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps) &&
+                   !string.IsNullOrWhiteSpace(uri.Host);
+        }
+
         public WebhookSettings(MainWindow _parent)
         {
             InitializeComponent();
@@ -27,6 +41,12 @@ namespace RelaunchProcess
 
         private void RestoreSettings()
         {
+            if ( (string.IsNullOrWhiteSpace(Settings.Default.dwhBotname) || Settings.Default.dwhBotname.Length > dwhBotNameMaxLength))
+            {
+                // значение по умолчанию
+                Settings.Default.dwhBotname = "Auto Relauncher";
+                Settings.Default.Save();
+            }
             textDwhBotName.Text = Settings.Default.dwhBotname;
             textDwhAvatarUrl.Text = Settings.Default.dwhAvatarURL;
             textDwhURL.Text = Settings.Default.dwhURL;
@@ -44,6 +64,8 @@ namespace RelaunchProcess
 
         public void UpdateUI()
         {
+            // запрещаем изменять настройки, если Discord включен
+            // или разрешаем, если выключен
             groupBoxSettingsDiscord.Enabled = !chbxDiscordEnabled.Checked;
         }
 
@@ -59,12 +81,10 @@ namespace RelaunchProcess
 
         private void BtnOk_Click(object sender, EventArgs e)
         {
-            if ( (String.IsNullOrEmpty(textDwhURL.Text) ||
-                Uri.IsWellFormedUriString(textDwhURL.Text, UriKind.Absolute)) &&
-                (String.IsNullOrEmpty(textDwhAvatarUrl.Text) || 
-                Uri.IsWellFormedUriString(textDwhAvatarUrl.Text, UriKind.Absolute)) )
+            if ( LinkIsValidOrNull(textDwhURL.Text) && LinkIsValidOrNull(textDwhAvatarUrl.Text) &&
+                (!(string.IsNullOrWhiteSpace(textDwhBotName.Text) || textDwhBotName.Text.Length > dwhBotNameMaxLength)))
             {
-                if (String.IsNullOrEmpty(textDwhURL.Text))
+                if (String.IsNullOrWhiteSpace(textDwhURL.Text))
                 {
                     chbxDiscordEnabled.Checked = false;
                 }
@@ -78,7 +98,18 @@ namespace RelaunchProcess
             }
             else 
             {
-                MessageBox.Show("Неверный формат URL.\rОчистите или исправьте.", "URL", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (!LinkIsValidOrNull(textDwhURL.Text))
+                {
+                    MessageBox.Show("Неверный формат URL вебхука.\rОчистите или исправьте.", "URL", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                if (!LinkIsValidOrNull(textDwhAvatarUrl.Text))
+                {
+                    MessageBox.Show("Неверный формат URL аватара бота.\rОчистите или исправьте.", "URL", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                if (string.IsNullOrWhiteSpace(textDwhBotName.Text) || textDwhBotName.Text.Length > dwhBotNameMaxLength)
+                {
+                    MessageBox.Show($"Имя бота не может быть пустым или длиннее {dwhBotNameMaxLength} символов.", "Запуск невозможен", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -88,8 +119,26 @@ namespace RelaunchProcess
             if ( (Button)sender == btnClearAvatarUrlField ) textDwhAvatarUrl.Text = "";
         }
 
-        private void chbxDiscordEnabled_CheckedChanged(object sender, EventArgs e)
+        private void chbxDiscordEnabled_Click(object sender, EventArgs e)
         {
+            if (chbxDiscordEnabled.Checked)
+            {
+                if ( !LinkIsValid(textDwhURL.Text) )
+                {
+                    chbxDiscordEnabled.Checked = false;
+                    MessageBox.Show("Неверный формат URL вебхука.\rИ он не может быть пустым для запуска.\rИсправьте его.", "Запуск невозможен", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                if ( !LinkIsValidOrNull(textDwhAvatarUrl.Text) )
+                {
+                    chbxDiscordEnabled.Checked = false;
+                    MessageBox.Show("Неверный формат URL аватара бота.\rИсправьте или оставьте пустым.", "Запуск невозможен", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                if ( string.IsNullOrWhiteSpace(textDwhBotName.Text) || textDwhBotName.Text.Length > dwhBotNameMaxLength )
+                {
+                    chbxDiscordEnabled.Checked = false;
+                    MessageBox.Show($"Имя бота не может быть пустым или длиннее {dwhBotNameMaxLength} символов.", "Запуск невозможен", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
             UpdateUI();
         }
     }

@@ -16,9 +16,9 @@ namespace RelaunchProcess
 {
     public partial class WebhookSettings : Form
     {
-        private Form1 parent;
+        private MainWindow parent;
         
-        public WebhookSettings(Form1 _parent)
+        public WebhookSettings(MainWindow _parent)
         {
             InitializeComponent();
             parent = _parent;

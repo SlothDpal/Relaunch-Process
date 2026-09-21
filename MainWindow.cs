@@ -19,7 +19,7 @@ using System.Configuration;
 
 namespace Process_Auto_Relaunch
 {
-    public partial class Form1 : Form
+    public partial class MainWindow : Form
     {
         [Flags]
         public enum NotifyLevel
@@ -44,7 +44,7 @@ namespace Process_Auto_Relaunch
         /// </summary>
         public string ProcessName { get { return textBoxProcessName.Text; } set { textBoxProcessName.Text = value; } }
 
-        public Form1()
+        public MainWindow()
         {
             InitializeComponent();
             if (Settings.Default.upgradeSettings)

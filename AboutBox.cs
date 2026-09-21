@@ -14,9 +14,11 @@ namespace RelaunchProcess
         public AboutBox()
         {
             InitializeComponent();
+            var buildDate = Assembly.GetExecutingAssembly().GetCustomAttributes<AssemblyMetadataAttribute>()
+                .FirstOrDefault(a => a.Key == "BuildDate")?.Value;
             this.Text = String.Format("О программе {0}", AssemblyTitle);
             this.labelProductName.Text = AssemblyProduct;
-            this.labelVersion.Text = String.Format("Версия {0}", AssemblyVersion);
+            this.labelVersion.Text = String.Format("Версия {0} (сборка от {1})", AssemblyVersion, buildDate);
             this.labelCopyright.Text = AssemblyCopyright;
             this.labelCompanyName.Text = AssemblyCompany;
             this.textBoxDescription.Text = AssemblyDescription;

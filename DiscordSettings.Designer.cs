@@ -143,7 +143,7 @@ namespace RelaunchProcess
             this.chbxDiscordEnabled.TabIndex = 2;
             this.chbxDiscordEnabled.Text = "Включить отправку сообщений в Discord";
             this.chbxDiscordEnabled.UseVisualStyleBackColor = true;
-            this.chbxDiscordEnabled.CheckedChanged += new System.EventHandler(this.chbxDiscordEnabled_CheckedChanged);
+            this.chbxDiscordEnabled.Click += new System.EventHandler(this.chbxDiscordEnabled_Click);
             // 
             // btnClearAvatarUrlField
             // 
@@ -183,7 +183,7 @@ namespace RelaunchProcess
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(404, 241);
+            this.ClientSize = new System.Drawing.Size(404, 264);
             this.ControlBox = false;
             this.Controls.Add(this.chbxDiscordEnabled);
             this.Controls.Add(this.groupBoxSettingsDiscord);
